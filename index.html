@@ -527,7 +527,8 @@
         }
 
         function promptAdminPin() {
-            const pinModal = new bootstrap.Modal(document.getElementById('pinModal'));
+            const pinModalEl = document.getElementById('pinModal');
+            const pinModal = new bootstrap.Modal(pinModalEl);
             document.getElementById('pinInput').value = '';
             pinModal.show();
         }
@@ -535,7 +536,22 @@
         function verifyPin() {
             const pin = document.getElementById('pinInput').value;
             if (pin === '1234') {
-                bootstrap.Modal.getInstance(document.getElementById('pinModal')).hide();
+                // ปิด Modal และเคลียร์ Backdrop ของ Bootstrap อย่างถูกต้อง
+                const pinModalEl = document.getElementById('pinModal');
+                const modalInstance = bootstrap.Modal.getInstance(pinModalEl);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+
+                // หากอยู่ที่หน้า Login ให้ซ่อนหน้า Login แล้วเปิดแดชบอร์ดหลักในโหมด Admin
+                document.getElementById('loginSection').classList.add('d-none');
+                document.getElementById('mainAppSection').classList.remove('d-none');
+                document.body.style.background = "#f8f9fa";
+
                 switchRole('admin');
             } else {
                 alert('รหัส PIN ไม่ถูกต้อง (รหัสคือ 1234)');
