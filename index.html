@@ -185,7 +185,10 @@
                 <div>
                     <i class="fa-solid fa-user-shield me-2"></i> ผู้บริหารสูงสุด: <strong class="text-dark">คุณพิชญ์สินี ทับพยุง</strong>
                 </div>
-                <span class="badge bg-dark text-warning">Admin Authorized</span>
+                <!-- ปุ่มรีเซ็ตระบบใหม่ทั้งหมด -->
+                <button class="btn btn-danger btn-sm px-3 fw-semibold rounded-pill shadow-sm" onclick="resetSystem()">
+                    <i class="fa-solid fa-rotate-right me-1"></i> รีเซ็ตระบบใหม่ทั้งหมด
+                </button>
             </div>
 
             <!-- รายการรออนุมัติ -->
@@ -251,8 +254,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // โหลดข้อมูลพนักงานจาก LocalStorage หรือใช้ค่าเริ่มต้น
-        let employees = JSON.parse(localStorage.getItem('employees')) || [
+        const defaultEmployees = [
             { id: "EMP01", name: "คุณสมชาย ใจดี", position: "Senior Developer", dept: "IT", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
             { id: "EMP02", name: "คุณสมหญิง รักงาน", position: "UI/UX Designer", dept: "Design", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
             { id: "EMP03", name: "คุณมานะ อดทน", position: "Backend Developer", dept: "IT", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
@@ -265,6 +267,7 @@
             { id: "EMP10", name: "คุณสุภา สว่างใส", position: "Content Creator", dept: "Marketing", sickRemain: 30, personalRemain: 6, vacationRemain: 10 }
         ];
 
+        let employees = JSON.parse(localStorage.getItem('employees')) || JSON.parse(JSON.stringify(defaultEmployees));
         let currentEmpIndex = 0;
         let leaveRequests = JSON.parse(localStorage.getItem('leaveRequests')) || [];
 
@@ -487,9 +490,20 @@
             renderAdminData();
         }
 
+        // ฟังก์ชันรีเซ็ตระบบใหม่ทั้งหมด
+        function resetSystem() {
+            if (confirm('คุณต้องการรีเซ็ตข้อมูลระบบทั้งหมด (ประวัติการลาและโควตาวันลา) ใช่หรือไม่?')) {
+                localStorage.clear();
+                employees = JSON.parse(JSON.stringify(defaultEmployees));
+                leaveRequests = [];
+                alert('รีเซ็ตระบบเรียบร้อยแล้ว!');
+                switchRole('user');
+            }
+        }
+
         function saveStorage() {
             localStorage.setItem('leaveRequests', JSON.stringify(leaveRequests));
-            localStorage.setItem('employees', JSON.stringify(employees)); // เพิ่มการบันทึกข้อมูลพนักงาน
+            localStorage.setItem('employees', JSON.stringify(employees));
         }
     </script>
 </body>
