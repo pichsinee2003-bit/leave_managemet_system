@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สมัครสมาชิก - ระบบจัดการการลา</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Font (Prompt) เพื่อให้ฟอนต์ดูสวยงามทันสมัย -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="register-container">
+        <form class="register-card">
+            <h2>📝 สมัครสมาชิกใหม่</h2>
+            
+            <div class="form-group">
+                <label>ชื่อผู้ใช้งาน (Username):</label>
+                <input type="text" placeholder="ตั้งชื่อผู้ใช้งาน" required>
+            </div>
+
+            <div class="form-group">
+                <label>รหัสผ่าน (Password):</label>
+                <input type="password" placeholder="ตั้งรหัสผ่าน" required>
+            </div>
+
+            <div class="form-group">
+                <label>แผนก / ฝ่าย (Department):</label>
+                <select required>
+                    <option value="">-- เลือกแผนก --</option>
+                    <option value="it">ฝ่ายเทคโนโลยีสารสนเทศ (IT)</option>
+                    <option value="hr">ฝ่ายทรัพยากรบุคคล (HR)</option>
+                    <option value="market">ฝ่ายการตลาด (Marketing)</option>
+                    <option value="operation">ฝ่ายปฏิบัติการ (Operation)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>ตำแหน่ง (Position):</label>
+                <input type="text" placeholder="เช่น พนักงานทั่วไป, หัวหน้างาน" required>
+            </div>
+
+            <div class="form-group">
+                <label>อีเมลติดต่อ (Email):</label>
+                <input type="email" placeholder="example@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>เบอร์โทรศัพท์ (Phone Number):</label>
+                <input type="tel" placeholder="0812345678" required>
+            </div>
+
+            <button type="submit" class="btn-submit">สมัครสมาชิกและบันทึกข้อมูล</button>
+            
+            <div class="login-link">
+                <a href="#">มีบัญชีอยู่แล้ว? เข้าสู่ระบบที่นี่</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
