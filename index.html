@@ -82,13 +82,41 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
             <div>
                 <h1 class="h3 fw-bold mb-1" id="pageTitle">แดชบอร์ดพนักงาน</h1>
-                <p class="text-muted mb-0">ระบบจัดการลางานออนไลน์ (หักวันหยุดและวันอาทิตย์อัตโนมัติ)</p>
+                <p class="text-muted mb-0">ระบบจัดการลางานออนไลน์ (เลือกรายชื่อ หรือพิมพ์ชื่อใช้งานเองได้)</p>
             </div>
-            <!-- Dropdown เลือกพนักงาน 10 คน -->
-            <div id="employeeSelectorWrapper">
-                <select class="form-select bg-white shadow-sm fw-medium" style="width: 260px;" id="employeeSelect" onchange="changeEmployee(this.value)">
-                    <!-- จะถูกเติมด้วย JavaScript -->
-                </select>
+            
+            <!-- ส่วนเลือกพนักงาน หรือ พิมพ์ชื่อเอง -->
+            <div id="employeeSelectorWrapper" class="card p-3 shadow-sm bg-white" style="width: 320px;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label small fw-bold mb-0 text-primary"><i class="fa-solid fa-user-gear me-1"></i>จัดการผู้ใช้งาน</label>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" id="customModeToggle" onchange="toggleCustomMode(this.checked)">
+                        <label class="form-check-label small text-muted" for="customModeToggle">พิมพ์เอง</label>
+                    </div>
+                </div>
+
+                <!-- โหมดเลือกจาก Dropdown -->
+                <div id="selectModeDiv">
+                    <select class="form-select form-select-sm bg-light fw-medium" id="employeeSelect" onchange="changeEmployee(this.value)">
+                        <!-- เติมด้วย JS -->
+                    </select>
+                </div>
+
+                <!-- โหมดพิมพ์ชื่อเอง -->
+                <div id="customModeDiv" class="d-none">
+                    <div class="vstack gap-2">
+                        <input type="text" class="form-control form-control-sm" id="customEmpName" placeholder="ชื่อ-นามสกุล เช่น คุณพิชญ์สินี">
+                        <div class="row g-1">
+                            <div class="col-7">
+                                <input type="text" class="form-control form-control-sm" id="customEmpPos" placeholder="ตำแหน่ง">
+                            </div>
+                            <div class="col-5">
+                                <input type="text" class="form-control form-control-sm" id="customEmpDept" placeholder="แผนก">
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-primary w-100 mt-1" onclick="saveCustomEmployee()">ใช้งานชื่อนี้</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -211,15 +239,15 @@
                 </div>
             </div>
 
-            <!-- สรุปโควต้าพนักงานทั้ง 10 คน -->
+            <!-- สรุปโควต้าพนักงานทั้งหมด -->
             <div class="card p-4 mb-4">
-                <h5 class="fw-bold mb-3"><i class="fa-solid fa-users me-2 text-success"></i>สรุปสถานะวันลาพนักงานทั้งหมด 10 คน</h5>
+                <h5 class="fw-bold mb-3"><i class="fa-solid fa-users me-2 text-success"></i>สรุปสถานะวันลาพนักงานทั้งหมด</h5>
                 <div class="table-responsive">
                     <table class="table table-bordered align-middle">
                         <thead class="table-light text-center">
                             <tr>
                                 <th class="text-start">รหัส / ชื่อพนักงาน</th>
-                                <th>ตำแหน่ง</th>
+                                <th>ตำแหน่ง / แผนก</th>
                                 <th>ลาป่วย (คงเหลือ)</th>
                                 <th>ลากิจ (คงเหลือ)</th>
                                 <th>ลาพักร้อน (คงเหลือ)</th>
@@ -282,7 +310,7 @@
             let count = 0;
             let cur = new Date(start);
             while (cur <= end) {
-                let dayOfWeek = cur.getDay(); // 0 = วันอาทิตย์
+                let dayOfWeek = cur.getDay(); 
                 let dateStr = cur.toISOString().split('T')[0];
                 if (dayOfWeek !== 0 && !publicHolidays.includes(dateStr)) {
                     count++;
@@ -303,6 +331,7 @@
             employees.forEach((emp, idx) => {
                 select.innerHTML += `<option value="${idx}">${emp.id} - ${emp.name} (${emp.position})</option>`;
             });
+            select.value = currentEmpIndex;
         }
 
         function changeEmployee(index) {
@@ -310,8 +339,59 @@
             updateUI();
         }
 
+        function toggleCustomMode(isCustom) {
+            const selectDiv = document.getElementById('selectModeDiv');
+            const customDiv = document.getElementById('customModeDiv');
+            if (isCustom) {
+                selectDiv.classList.add('d-none');
+                customDiv.classList.remove('d-none');
+            } else {
+                selectDiv.classList.remove('d-none');
+                customDiv.classList.add('d-none');
+                updateUI();
+            }
+        }
+
+        function saveCustomEmployee() {
+            const name = document.getElementById('customEmpName').value.trim();
+            const position = document.getElementById('customEmpPos').value.trim() || 'พนักงานทั่วไป';
+            const dept = document.getElementById('customEmpDept').value.trim() || 'ทั่วไป';
+
+            if (!name) {
+                alert('กรุณากรอกชื่อ-นามสกุล');
+                return;
+            }
+
+            // ตรวจสอบว่ามีชื่อนี้อยู่แล้วในระบบไหม ถ้ามีให้เลือกคนนั้นเลย ถ้าไม่มีให้สร้างใหม่
+            let existingIdx = employees.findIndex(e => e.name === name);
+            if (existingIdx !== -1) {
+                currentEmpIndex = existingIdx;
+            } else {
+                const newEmp = {
+                    id: "EMP" + String(employees.length + 1).padStart(2, '0'),
+                    name: name,
+                    position: position,
+                    dept: dept,
+                    sickRemain: 30,
+                    personalRemain: 6,
+                    vacationRemain: 10
+                };
+                employees.push(newEmp);
+                currentEmpIndex = employees.length - 1;
+                saveStorage();
+                initEmployeeDropdown();
+            }
+
+            document.getElementById('customModeToggle').checked = false;
+            toggleCustomMode(false);
+            document.getElementById('employeeSelect').value = currentEmpIndex;
+            updateUI();
+            alert(`เปลี่ยนผู้ใช้งานเป็น: ${name} สำเร็จ!`);
+        }
+
         function updateUI() {
             let emp = employees[currentEmpIndex];
+            if (!emp) return;
             document.getElementById('userNameDisplay').innerText = emp.name;
             document.getElementById('userRoleDisplay').innerText = `${emp.position} (${emp.dept})`;
             
@@ -345,7 +425,7 @@
 
             const newReq = {
                 id: Date.now(),
-                empIndex: currentEmpIndex, // เก็บ Index ของพนักงานคนนั้นๆ โดยตรง
+                empIndex: currentEmpIndex,
                 empName: emp.name,
                 type: type,
                 startDate: startDate,
@@ -464,7 +544,7 @@
                 allEmpTbody.innerHTML += `
                     <tr>
                         <td class="fw-semibold">${emp.id} - ${emp.name}</td>
-                        <td><small class="text-muted">${emp.position}</small></td>
+                        <td><small class="text-muted">${emp.position} (${emp.dept})</small></td>
                         <td class="text-center text-primary fw-bold">${emp.sickRemain} วัน</td>
                         <td class="text-center text-success fw-bold">${emp.personalRemain} วัน</td>
                         <td class="text-center text-warning fw-bold">${emp.vacationRemain} วัน</td>
@@ -473,7 +553,6 @@
             });
         }
 
-        // ฟังก์ชันอัปเดตสถานะและตัดวันลาของพนักงานทันทีที่กดอนุมัติ
         function updateStatus(index, status) {
             let req = leaveRequests[index];
             if (status === 'อนุมัติ') {
@@ -484,7 +563,6 @@
                     alert('วันลาของพนักงานไม่เพียงพอสำหรับการอนุมัติ');
                     return;
                 }
-                // ตัดวันลาออกจากโควต้าของพนักงานทันที
                 emp[remainKey] -= req.days;
             }
             req.status = status;
