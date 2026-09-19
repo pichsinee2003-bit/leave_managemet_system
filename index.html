@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการลางานออนไลน์ - Leave Management System</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Prompt) -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f4f7f6;
+        }
+        .sidebar {
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            color: white;
+            min-height: 100vh;
+        }
+        .card-stat {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .card-stat:hover {
+            transform: translateY(-3px);
+        }
+        .avatar-circle {
+            width: 50px;
+            height: 50px;
+            background-color: #e9ecef;
+            color: #0d6efd;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar collapse p-3">
+                <div class="position-sticky">
+                    <h4 class="text-center py-3 fw-bold border-bottom mb-4">
+                        <i class="fa-solid fa-calendar-days me-2"></i> Leave System
+                    </h4>
+                    <ul class="nav flex-column gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link text-white active rounded bg-white bg-opacity-20" href="#">
+                                <i class="fa-solid fa-user me-2"></i> ระบบจัดการลา
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content Area -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                
+                <!-- Header Bar -->
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div class="d-flex align-items-center">
+                        <h2 class="h3 fw-bold mb-0 text-dark">ระบบจัดการลางานพนักงาน</h2>
+                        <span id="roleBadge" class="badge ms-3 fs-6 px-3 py-2 rounded-pill shadow-sm bg-primary text-white">โหมดพนักงาน</span>
+                    </div>
+                    <div class="btn-toolbar mb-2 mb-md-0 gap-2">
+                        <div class="input-group" id="userSelectorGroup">
+                            <label class="input-group-text bg-light text-secondary" for="userSelectDropdown"><i class="fa-solid fa-users"></i></label>
+                            <select class="form-select border" id="userSelectDropdown">
+                                <!-- JavaScript จะเติมรายชื่อพนักงาน 10 คนตรงนี้ -->
+                            </select>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-primary active" id="btnRoleUser">พนักงาน</button>
+                            <button type="button" class="btn btn-outline-warning text-dark fw-medium" id="btnRoleAdmin">ผู้บริหาร (Admin)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= USER SCREEN (หน้าพนักงาน) ================= -->
+                <div id="userScreen">
+                    <!-- ข้อมูลพนักงานและโควต้า -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="card card-stat p-3 h-100 bg-white">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-circle me-3" id="userAvatar">สม</div>
+                                    <div>
+                                        <h5 class="mb-0 fw-bold" id="userName">-</h5>
+                                        <p class="text-muted small mb-0"><span id="userId">-</span> | <span id="userPosition">-</span> (<span id="userDept">-</span>)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row g-2">
+                                <div class="col-4">
+                                    <div class="card card-stat p-3 bg-primary text-white text-center">
+                                        <small class="opacity-75">ลาป่วยคงเหลือ</small>
+                                        <h3 class="fw-bold mb-0"><span id="sickRemain">30</span> <span class="fs-6">วัน</span></h3>
+                                        <small class="text-light opacity-75" style="font-size: 0.75rem;">จากทั้งหมด 30 วัน</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card card-stat p-3 bg-success text-white text-center">
+                                        <small class="opacity-75">ลากิจคงเหลือ</small>
+                                        <h3 class="fw-bold mb-0"><span id="personalRemain">6</span> <span class="fs-6">วัน</span></h3>
+                                        <small class="text-light opacity-75" style="font-size: 0.75rem;">จากทั้งหมด 6 วัน</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card card-stat p-3 bg-info text-white text-center">
+                                        <small class="opacity-75">ลาพักผ่อนคงเหลือ</small>
+                                        <h3 class="fw-bold mb-0"><span id="vacationRemain">10</span> <span class="fs-6">วัน</span></h3>
+                                        <small class="text-light opacity-75" style="font-size: 0.75rem;">จากทั้งหมด 10 วัน</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ฟอร์มส่งคำขอลางาน และ ตารางประวัติ -->
+                    <div class="row g-4">
+                        <div class="col-lg-5">
+                            <div class="card card-stat p-4 bg-white">
+                                <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-file-pen me-2"></i> ยื่นคำขอลางาน</h5>
+                                <form id="leaveForm">
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-semibold">ประเภทการลา</label>
+                                        <select class="form-select" id="leaveType" required>
+                                            <option value="ลาป่วย">ลาป่วย</option>
+                                            <option value="ลากิจ">ลากิจ</option>
+                                            <option value="ลาพักผ่อน">ลาพักผ่อน</option>
+                                        </select>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <label class="form-label small fw-semibold">ตั้งแต่วันที่</label>
+                                            <input type="date" class="form-control" id="startDate" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label small fw-semibold">ถึงวันที่</label>
+                                            <input type="date" class="form-control" id="endDate" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-semibold">เหตุผลการลา</label>
+                                        <textarea class="form-control" id="leaveReason" rows="3" placeholder="ระบุเหตุผลความจำเป็น..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm">
+                                        <i class="fa-solid fa-paper-plane me-1"></i> ยื่นคำขออนุมัติ
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <div class="card card-stat p-4 bg-white h-100">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-clock-rotate-left me-2"></i> ประวัติการลางานของคุณ</h5>
+                                    <span class="badge bg-light text-secondary border" id="userRecordCount">0 รายการ</span>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="ps-3">ประเภท</th>
+                                                <th>ช่วงวันที่</th>
+                                                <th class="text-center">จำนวนวัน (หักวันหยุดแล้ว)</th>
+                                                <th class="text-center">สถานะ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="userHistoryTableBody">
+                                            <tr><td colspan="4" class="text-center text-muted py-3">ยังไม่มีประวัติการส่งคำขอ</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= ADMIN SCREEN (หน้าผู้บริหาร) ================= -->
+                <div id="adminScreen" class="d-none">
+                    <div class="alert alert-warning shadow-sm mb-4 d-flex align-items-center justify-content-between">
+                        <div>
+                            <i class="fa-solid fa-user-tie me-2"></i> ผู้บริหารสูงสุดผู้มีอำนาจอนุมัติ: <strong class="text-dark">คุณพิชญ์สินี ทับพยุง</strong>
+                        </div>
+                        <span class="badge bg-dark text-warning">Admin Mode</span>
+                    </div>
+
+                    <!-- แสดงภาพรวมวันลาคงเหลือของพนักงานทั้ง 10 คน -->
+                    <div class="card card-stat p-4 bg-white mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-users-rectangle me-2"></i> สถานะวันลาคงเหลือของพนักงานทั้งหมด (10 คน)</h5>
+                            <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#manageQuotaModal">
+                                <i class="fa-solid fa-sliders me-1"></i> จัดการ/แก้ไขโควต้า
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered align-middle">
+                                <thead class="table-light text-center">
+                                    <tr>
+                                        <th class="text-start ps-3">รหัส / ชื่อพนักงาน</th>
+                                        <th>ตำแหน่ง / แผนก</th>
+                                        <th class="text-primary">ลาป่วยคงเหลือ</th>
+                                        <th class="text-success">ลากิจคงเหลือ</th>
+                                        <th class="text-info">ลาพักผ่อนคงเหลือ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="allEmployeesSummaryTable">
+                                    <!-- เติมข้อมูลด้วย JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- ตารางคำขออนุมัติ -->
+                    <div class="card card-stat p-4 bg-white mb-4">
+                        <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-list-check me-2"></i> รายการคำขอลางานที่รออนุมัติ / ประวัติทั้งหมด</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-3">วันที่ยื่น</th>
+                                        <th>พนักงาน</th>
+                                        <th>ประเภท</th>
+                                        <th>ช่วงวันที่ลา</th>
+                                        <th class="text-center">จำนวนวัน</th>
+                                        <th class="text-center">สถานะ</th>
+                                        <th class="text-center pe-3">จัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminTableBody">
+                                    <tr><td colspan="7" class="text-center text-muted py-4">ยังไม่มีรายการคำขอลางานในระบบ</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal ใส่รหัส PIN สำหรับ Admin -->
+    <div class="modal fade" id="pinModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-body text-center p-4">
+                    <div class="mb-3 text-warning fs-1"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h5 class="fw-bold mb-1">ยืนยันสิทธิ์ผู้บริหาร</h5>
+                    <p class="text-muted small mb-2">ผู้บริหาร: <strong>คุณพิชญ์สินี ทับพยุง</strong></p>
+                    <p class="text-muted small mb-3">กรุณากรอกรหัส PIN (รหัส: 1234)</p>
+                    <input type="password" id="pinInput" class="form-control text-center fs-4 mb-3" placeholder="••••" maxlength="4">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-light w-50" data-bs-dismiss="modal">ยกเลิก</button>
+                        <button type="button" class="btn btn-warning w-50 fw-medium" id="btnSubmitPin">ยืนยัน</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ตรวจสอบคำขอ (Admin) -->
+    <div class="modal fade" id="viewDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-circle-info me-2"></i> ตรวจสอบคำขอลางาน</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                        <div class="avatar-circle me-3" id="modalEmpAvatar">สม</div>
+                        <div>
+                            <h5 class="mb-0 fw-bold" id="modalEmpName">-</h5>
+                            <p class="text-muted small mb-0"><span id="modalEmpId">-</span> | <span id="modalEmpPos">-</span> (<span id="modalEmpDept">-</span>)</p>
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <div class="p-3 bg-light rounded-3">
+                                <small class="text-muted d-block">ประเภทการลา</small>
+                                <span class="fw-bold text-primary" id="modalLeaveType">-</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 bg-light rounded-3">
+                                <small class="text-muted d-block">จำนวนวันลา</small>
+                                <span class="fw-bold text-dark" id="modalLeaveDays">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">ช่วงวันที่ลา</small>
+                        <span class="fw-medium" id="modalLeavePeriod">-</span>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">เหตุผลการลา</small>
+                        <p class="p-2 bg-light rounded-3 text-secondary mb-0" id="modalLeaveReason">-</p>
+                    </div>
+                    <div class="alert alert-secondary py-2 small mb-0">
+                        <strong>โควต้าคงเหลือปัจจุบันของพนักงาน:</strong> ลาป่วย <span id="modalEmpSickRemain">0</span> | ลากิจ <span id="modalEmpPersonalRemain">0</span> | พักผ่อน <span id="modalEmpVacationRemain">0</span>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-danger px-4 rounded-pill" id="btnReject"><i class="fa-solid fa-xmark me-1"></i> ไม่อนุมัติ</button>
+                    <button type="button" class="btn btn-success px-4 rounded-pill" id="btnApprove"><i class="fa-solid fa-check me-1"></i> อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal จัดการโควต้าพนักงาน (Admin) -->
+    <div class="modal fade" id="manageQuotaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-sliders me-2"></i> จัดการ/แก้ไขโควต้าวันลาพนักงาน</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th class="text-start">พนักงาน</th>
+                                    <th>ลาป่วยคงเหลือ</th>
+                                    <th>ลากิจคงเหลือ</th>
+                                    <th>ลาพักผ่อนคงเหลือ</th>
+                                    <th>บันทึก</th>
+                                </tr>
+                            </thead>
+                            <tbody id="quotaManageTableBody">
+                                <!-- เติมข้อมูลด้วย JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script หลัก -->
+    <script src="script.js"></script>
+</body>
+</html>
