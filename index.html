@@ -98,6 +98,11 @@
                                     <!-- บรรจุรายชื่อด้วย JavaScript -->
                                 </select>
                             </div>
+                            <!-- เพิ่มช่องกรอกรหัส PIN พนักงาน -->
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-secondary">รหัสผ่านพนักงาน (PIN)</label>
+                                <input type="password" id="employeePinInput" class="form-control text-center fs-5" placeholder="••••" maxlength="4">
+                            </div>
                             <button type="button" class="btn btn-primary w-100 py-3 shadow-sm" onclick="loginAsEmployee(false)">
                                 <i class="fa-solid fa-right-to-bracket me-2"></i>เข้าสู่ระบบพนักงาน
                             </button>
@@ -108,6 +113,10 @@
                             <div class="mb-3">
                                 <label class="form-label small fw-bold text-secondary">ชื่อ - นามสกุล</label>
                                 <input type="text" class="form-control" id="loginCustomName" placeholder="เช่น คุณสมชาย ใจดี">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-secondary">รหัสผ่านพนักงาน (PIN)</label>
+                                <input type="password" id="employeeCustomPinInput" class="form-control text-center fs-5" placeholder="••••" maxlength="4">
                             </div>
                             <button type="button" class="btn btn-primary w-100 py-3 shadow-sm" onclick="loginAsEmployee(true)">
                                 <i class="fa-solid fa-user-pen me-2"></i>เข้าสู่ระบบด้วยชื่อนี้
@@ -146,12 +155,10 @@
                         <div id="userRoleDisplay" class="text-muted small">Senior Developer (IT)</div>
                     </div>
                     
-                    <!-- แสดงเฉพาะปุ่มพนักงานเมื่ออยู่ในโหมดพนักงาน -->
                     <div id="userNavBadge" class="d-none">
                         <span class="badge bg-primary px-3 py-2">พนักงาน</span>
                     </div>
 
-                    <!-- แสดงเฉพาะปุ่มผู้บริหารเมื่ออยู่ในโหมดแอดมิน -->
                     <div id="adminNavBadge" class="d-none">
                         <span class="badge bg-warning text-dark px-3 py-2 fw-medium"><i class="fa-solid fa-user-shield me-1"></i> ผู้บริหาร (Admin)</span>
                     </div>
@@ -339,7 +346,7 @@
         </div>
     </div>
 
-    <!-- Modal PIN -->
+    <!-- Modal PIN ผู้บริหาร -->
     <div class="modal fade" id="pinModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content border-0 shadow-lg rounded-4">
@@ -373,16 +380,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const defaultEmployees = [
-            { id: "EMP01", name: "คุณสมชาย ใจดี", position: "Senior Developer", dept: "IT", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
-            { id: "EMP02", name: "คุณสมหญิง รักงาน", position: "UI/UX Designer", dept: "Design", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
-            { id: "EMP03", name: "คุณมานะ อดทน", position: "Backend Developer", dept: "IT", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
-            { id: "EMP04", name: "คุณสมรักษ์ ดีพอ", position: "HR Manager", dept: "HR", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
-            { id: "EMP05", name: "คุณวิชัย มั่นคง", position: "Accountant", dept: "Finance", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
-            { id: "EMP06", name: "คุณสุดา รักดี", position: "Marketing Specialist", dept: "Marketing", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
-            { id: "EMP07", name: "คุณปิติ ยินดี", position: "Sales Executive", dept: "Sales", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
-            { id: "EMP08", name: "คุณกานดา ภาวนา", position: "Customer Support", dept: "Operations", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
-            { id: "EMP09", name: "คุณธนพล มั่นหมาย", position: "System Admin", dept: "IT", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
-            { id: "EMP10", name: "คุณสุภา สว่างใส", position: "Content Creator", dept: "Marketing", sickRemain: 30, personalRemain: 6, vacationRemain: 10 }
+            { id: "EMP01", name: "คุณสมชาย ใจดี", position: "Senior Developer", dept: "IT", pin: "1234", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
+            { id: "EMP02", name: "คุณสมหญิง รักงาน", position: "UI/UX Designer", dept: "Design", pin: "1234", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
+            { id: "EMP03", name: "คุณมานะ อดทน", position: "Backend Developer", dept: "IT", pin: "1234", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
+            { id: "EMP04", name: "คุณสมรักษ์ ดีพอ", position: "HR Manager", dept: "HR", pin: "1234", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
+            { id: "EMP05", name: "คุณวิชัย มั่นคง", position: "Accountant", dept: "Finance", pin: "1234", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
+            { id: "EMP06", name: "คุณสุดา รักดี", position: "Marketing Specialist", dept: "Marketing", pin: "1234", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
+            { id: "EMP07", name: "คุณปิติ ยินดี", position: "Sales Executive", dept: "Sales", pin: "1234", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
+            { id: "EMP08", name: "คุณกานดา ภาวนา", position: "Customer Support", dept: "Operations", pin: "1234", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
+            { id: "EMP09", name: "คุณธนพล มั่นหมาย", position: "System Admin", dept: "IT", pin: "1234", sickRemain: 30, personalRemain: 6, vacationRemain: 10 },
+            { id: "EMP10", name: "คุณสุภา สว่างใส", position: "Content Creator", dept: "Marketing", pin: "1234", sickRemain: 30, personalRemain: 6, vacationRemain: 10 }
         ];
 
         let employees = JSON.parse(localStorage.getItem('employees')) || JSON.parse(JSON.stringify(defaultEmployees));
@@ -433,23 +440,32 @@
         function loginAsEmployee(isCustom) {
             if (isCustom) {
                 const name = document.getElementById('loginCustomName').value.trim();
-                const position = 'พนักงานทั่วไป';
-                const dept = 'ทั่วไป';
+                const pin = document.getElementById('employeeCustomPinInput').value.trim();
 
                 if (!name) {
                     alert('กรุณากรอกชื่อ-นามสกุลของคุณ');
                     return;
                 }
+                if (!pin) {
+                    alert('กรุณากรอกรหัสผ่าน (PIN)');
+                    return;
+                }
 
                 let existingIdx = employees.findIndex(e => e.name === name);
                 if (existingIdx !== -1) {
+                    if (employees[existingIdx].pin && employees[existingIdx].pin !== pin) {
+                        alert('รหัส PIN ของพนักงานไม่ถูกต้อง (รหัสเริ่มต้นคือ 1234)');
+                        return;
+                    }
                     currentEmpIndex = existingIdx;
                 } else {
+                    // หากพิมพ์ชื่อใหม่ ระบบจะสร้างบัญชีพร้อมกำหนด PIN ที่กรอก
                     const newEmp = {
                         id: "EMP" + String(employees.length + 1).padStart(2, '0'),
                         name: name,
-                        position: position,
-                        dept: dept,
+                        position: 'พนักงานทั่วไป',
+                        dept: 'ทั่วไป',
+                        pin: pin,
                         sickRemain: 30,
                         personalRemain: 6,
                         vacationRemain: 10
@@ -460,13 +476,34 @@
                 }
             } else {
                 const select = document.getElementById('loginEmployeeSelect');
-                currentEmpIndex = parseInt(select.value);
+                const pin = document.getElementById('employeePinInput').value.trim();
+                let selectedIdx = parseInt(select.value);
+
+                if (!pin) {
+                    alert('กรุณากรอกรหัสผ่าน (PIN)');
+                    return;
+                }
+
+                let emp = employees[selectedIdx];
+                // ตรวจสอบ PIN (ถ้าในข้อมูลยังไม่มี pin กำหนดค่าเริ่มต้นเป็น 1234)
+                let empPin = emp.pin || "1234";
+                if (pin !== empPin) {
+                    alert('รหัส PIN ไม่ถูกต้อง (รหัสเริ่มต้นคือ 1234)');
+                    return;
+                }
+
+                currentEmpIndex = selectedIdx;
             }
 
             isLoggedIn = true;
             localStorage.setItem('isAdminMode', 'false');
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('currentEmpIndex', currentEmpIndex);
+            
+            // เคลียร์ค่าช่อง PIN
+            document.getElementById('employeePinInput').value = '';
+            document.getElementById('employeeCustomPinInput').value = '';
+
             showMainApp();
         }
 
@@ -637,7 +674,6 @@
         function renderAdminData() {
             document.getElementById('adminNameAlertDisplay').innerText = currentAdminName;
             
-            // Render Pending Approval
             const approvalTbody = document.getElementById('adminApprovalTable');
             const pendingReqs = leaveRequests.filter(r => r.status === 'รออนุมัติ');
 
@@ -662,7 +698,6 @@
                 });
             }
 
-            // Render Admin History Log
             const historyTbody = document.getElementById('adminHistoryTable');
             document.getElementById('adminHistoryCount').innerText = `${leaveRequests.length} รายการ`;
 
@@ -685,7 +720,6 @@
                 });
             }
 
-            // Render All Employees Summary Table
             const allEmpTbody = document.getElementById('allEmployeesTable');
             allEmpTbody.innerHTML = '';
             employees.forEach(emp => {
