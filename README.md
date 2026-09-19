@@ -110,6 +110,7 @@ CREATE TABLE leave_requests (
     FOREIGN KEY (emp_id) REFERENCES employees(id)
 );
 
+
 ## ⚙️ ตรรกะการคำนวณและการเชื่อมโยงระบบ (Business Logic Specification)
 
 ระบบประมวลผลวันลาพัฒนาขึ้นตามข้อกำหนดของกฎหมายแรงงานไทย:
