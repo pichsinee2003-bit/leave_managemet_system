@@ -79,13 +79,13 @@
                         <p class="text-muted small">ระบบจัดการลางานออนไลน์สำหรับองค์กร</p>
                     </div>
 
-                    <!-- แท็บเลือกระหว่าง เลือกรายชื่อ กับ พิมพ์เอง -->
+                    <!-- แท็บเลือกระหว่าง เลือกรายชื่อ กับ พิมพ์ชื่อเอง -->
                     <ul class="nav nav-pills nav-fill mb-4 bg-light p-1 rounded-3" id="loginTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active py-2 rounded-3 fw-medium" id="select-tab" data-bs-toggle="pill" data-bs-target="#selectContent" type="button" role="tab">เลือกรายชื่อพนักงาน</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link py-2 rounded-3 fw-medium" id="custom-tab" data-bs-toggle="pill" data-bs-target="#customContent" type="button" role="tab">พิมพ์ชื่อ-ตำแหน่งเอง</button>
+                            <button class="nav-link py-2 rounded-3 fw-medium" id="custom-tab" data-bs-toggle="pill" data-bs-target="#customContent" type="button" role="tab">พิมพ์ชื่อเอง</button>
                         </li>
                     </ul>
 
@@ -103,21 +103,11 @@
                             </button>
                         </div>
 
-                        <!-- โหมดพิมพ์เอง -->
+                        <!-- โหมดพิมพ์ชื่อเอง (เอาตำแหน่ง/แผนกออกแล้ว) -->
                         <div class="tab-pane fade" id="customContent" role="tabpanel">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold text-secondary">ชื่อ - นามสกุล</label>
                                 <input type="text" class="form-control" id="loginCustomName" placeholder="เช่น คุณพิชญ์สินี ทับพยุง">
-                            </div>
-                            <div class="row g-2 mb-3">
-                                <div class="col-7">
-                                    <label class="form-label small fw-bold text-secondary">ตำแหน่ง</label>
-                                    <input type="text" class="form-control" id="loginCustomPos" placeholder="เช่น HR Manager">
-                                </div>
-                                <div class="col-5">
-                                    <label class="form-label small fw-bold text-secondary">แผนก</label>
-                                    <input type="text" class="form-control" id="loginCustomDept" placeholder="เช่น HR">
-                                </div>
                             </div>
                             <button type="button" class="btn btn-primary w-100 py-3 shadow-sm" onclick="loginAsEmployee(true)">
                                 <i class="fa-solid fa-user-pen me-2"></i>เข้าสู่ระบบด้วยชื่อนี้
@@ -400,8 +390,8 @@
         function loginAsEmployee(isCustom) {
             if (isCustom) {
                 const name = document.getElementById('loginCustomName').value.trim();
-                const position = document.getElementById('loginCustomPos').value.trim() || 'พนักงานทั่วไป';
-                const dept = document.getElementById('loginCustomDept').value.trim() || 'ทั่วไป';
+                const position = 'พนักงานทั่วไป';
+                const dept = 'ทั่วไป';
 
                 if (!name) {
                     alert('กรุณากรอกชื่อ-นามสกุลของคุณ');
