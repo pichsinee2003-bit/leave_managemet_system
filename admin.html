@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบผู้บริหาร - LeaveFlow Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #fffbeb 0%, #f8f9fa 100%);
+            color: #334155;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            border: none; border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08); background: white; width: 100%; max-width: 440px;
+        }
+        .card { border: none; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .btn-warning { background-color: #f59e0b; border-color: #f59e0b; border-radius: 12px; padding: 12px; font-weight: 600; color: #fff; }
+        .form-control, .form-select { border-radius: 12px; padding: 12px; border: 1px solid #e2e8f0; }
+        .table { vertical-align: middle; }
+        .badge { padding: 8px 12px; border-radius: 8px; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <!-- ================= หน้าล็อกอินแอดมิน ================= -->
+    <div id="adminLoginSection" class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="login-card p-4 p-md-5 mx-auto text-center">
+                    <div class="bg-warning text-dark rounded-4 p-3 d-inline-flex align-items-center justify-content-center shadow-sm mb-3" style="width: 64px; height: 64px;">
+                        <i class="fa-solid fa-user-shield fs-2"></i>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-1">LeaveFlow Pro</h3>
+                    <p class="text-muted small mb-4">ระบบจัดการลางาน (สำหรับผู้บริหาร / Admin)</p>
+
+                    <div class="mb-3 text-start">
+                        <label class="form-label small fw-semibold text-secondary">รายชื่อผู้บริหาร</label>
+                        <select id="adminNameSelect" class="form-select bg-light">
+                            <option value="คุณพิชญ์สินี ทับพยุง">คุณพิชญ์สินี ทับพยุง</option>
+                            <option value="คุณณัฐพงศ์ พรมสงฆ์">คุณณัฐพงศ์ พรมสงฆ์</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4 text-start">
+                        <label class="form-label small fw-semibold text-secondary">รหัส PIN แอดมิน</label>
+                        <input type="password" id="adminPinInput" class="form-control text-center fs-4" placeholder="••••" maxlength="4">
+                    </div>
+
+                    <button type="button" class="btn btn-warning w-100 shadow-sm mb-3" onclick="verifyAdminPin()">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i>เข้าสู่ระบบผู้บริหาร
+                    </button>
+
+                    <hr class="my-3 text-muted opacity-25">
+
+                    <a href="index.html" class="text-decoration-none text-muted small">
+                        <i class="fa-solid fa-arrow-left me-1"></i>กลับไปหน้าเข้าสู่ระบบพนักงาน
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= แดชบอร์ดแอดมิน (ซ่อนอยู่จนกว่าจะ Login) ================= -->
+    <div id="adminDashboardSection" class="d-none w-100">
+        <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                    <div class="bg-warning text-dark rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <span>LeaveFlow Pro (Admin)</span>
+                </a>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="text-end d-none d-sm-block">
+                        <div id="adminNameDisplay" class="fw-bold text-dark">-</div>
+                        <div class="text-muted small">System Administrator</div>
+                    </div>
+                    <span class="badge bg-warning text-dark px-3 py-2 fw-medium"><i class="fa-solid fa-user-shield me-1"></i> ผู้บริหาร</span>
+                    <button class="btn btn-outline-danger btn-sm px-3 ms-2" onclick="adminLogout()" title="ออกจากระบบ">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container py-4">
+            <div class="alert alert-warning shadow-sm mb-4 d-flex align-items-center justify-content-between rounded-4 p-3 flex-wrap gap-2">
+                <div><i class="fa-solid fa-user-shield me-2"></i> ผู้บริหารที่เข้าสู่ระบบ: <strong class="text-dark" id="adminAlertName">-</strong></div>
+                <button class="btn btn-danger btn-sm px-3 fw-semibold rounded-pill shadow-sm" onclick="resetSystem()">
+                    <i class="fa-solid fa-rotate-right me-1"></i> รีเซ็ตระบบใหม่ทั้งหมด
+                </button>
+            </div>
+
+            <!-- รายการรออนุมัติ -->
+            <div class="card p-4 mb-4">
+                <h5 class="fw-bold mb-3"><i class="fa-solid fa-list-check text-warning me-2"></i>รายการคำขอลา (รออนุมัติ)</h5>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>พนักงาน</th><th>ประเภท</th><th>ช่วงวันที่</th><th class="text-center">วัน</th><th>เหตุผล</th><th class="text-center">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminApprovalTable">
+                            <tr><td colspan="6" class="text-center text-muted py-3">ไม่มีรายการรออนุมัติ</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ประวัติการลอย้อนหลังทั้งหมด -->
+            <div class="card p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0"><i class="fa-solid fa-clock-rotate-left text-secondary me-2"></i>ประวัติการลอย้อนหลังทั้งหมด (Admin Log)</h5>
+                    <span class="badge bg-light text-secondary border" id="adminHistoryCount">0 รายการ</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>พนักงาน</th><th>ประเภท</th><th>ช่วงวันที่</th><th class="text-center">จำนวนวัน</th><th class="text-center">สถานะ</th><th>ผู้ดำเนินการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminHistoryTable">
+                            <tr><td colspan="6" class="text-center text-muted py-3">ยังไม่มีประวัติการลาในระบบ</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- สรุปวันลาพนักงานทั้งหมด -->
+            <div class="card p-4 mb-4">
+                <h5 class="fw-bold mb-3"><i class="fa-solid fa-users me-2 text-success"></i>สรุปสถานะวันลาพนักงานทั้งหมด</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th class="text-start">รหัส / ชื่อพนักงาน</th><th>ตำแหน่ง / แผนก</th><th>ลาป่วย (คงเหลือ)</th><th>ลากิจ (คงเหลือ)</th><th>ลาพักร้อน (คงเหลือ)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allEmployeesTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let employees = JSON.parse(localStorage.getItem('employees')) || [];
+        let leaveRequests = JSON.parse(localStorage.getItem('leaveRequests')) || [];
+        let isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+        let currentAdminName = localStorage.getItem('currentAdminName') || 'คุณพิชญ์สินี ทับพยุง';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (isAdminLoggedIn) {
+                showAdminDashboard();
+            } else {
+                showAdminLogin();
+            }
+        });
+
+        function verifyAdminPin() {
+            const pin = document.getElementById('adminPinInput').value;
+            const selectedAdmin = document.getElementById('adminNameSelect').value;
+
+            if (pin === '1234') {
+                currentAdminName = selectedAdmin;
+                isAdminLoggedIn = true;
+                localStorage.setItem('isAdminLoggedIn', 'true');
+                localStorage.setItem('currentAdminName', currentAdminName);
+                showAdminDashboard();
+            } else {
+                alert('รหัส PIN แอดมินไม่ถูกต้อง (รหัสคือ 1234)');
+            }
+        }
+
+        function adminLogout() {
+            isAdminLoggedIn = false;
+            localStorage.setItem('isAdminLoggedIn', 'false');
+            showAdminLogin();
+        }
+
+        function showAdminLogin() {
+            document.getElementById('adminLoginSection').classList.remove('d-none');
+            document.getElementById('adminDashboardSection').classList.add('d-none');
+            document.body.style.background = "linear-gradient(135deg, #fffbeb 0%, #f8f9fa 100%)";
+            document.getElementById('adminPinInput').value = '';
+        }
+
+        function showAdminDashboard() {
+            document.getElementById('adminLoginSection').classList.add('d-none');
+            document.getElementById('adminDashboardSection').classList.remove('d-none');
+            document.body.style.background = "#f8f9fa";
+            document.getElementById('adminNameDisplay').innerText = currentAdminName;
+            document.getElementById('adminAlertName').innerText = currentAdminName;
+            renderAdminData();
+        }
+
+        function renderAdminData() {
+            employees = JSON.parse(localStorage.getItem('employees')) || [];
+            leaveRequests = JSON.parse(localStorage.getItem('leaveRequests')) || [];
+
+            // Render Approval
+            const approvalTbody = document.getElementById('adminApprovalTable');
+            const pendingReqs = leaveRequests.filter(r => r.status === 'รออนุมัติ');
+            if (pendingReqs.length === 0) {
+                approvalTbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3">ไม่มีรายการรออนุมัติ</td></tr>`;
+            } else {
+                approvalTbody.innerHTML = '';
+                pendingReqs.forEach(req => {
+                    approvalTbody.innerHTML += `<tr><td><span class="fw-semibold">${req.empName}</span></td><td>${req.type}</td><td>${req.startDate} ถึง ${req.endDate}</td><td class="text-center fw-bold">${req.days} วัน</td><td>${req.reason}</td><td class="text-center"><button class="btn btn-success btn-sm px-2 me-1" onclick="handleLeave(${req.id}, 'อนุมัติ')"><i class="fa-solid fa-check"></i></button><button class="btn btn-danger btn-sm px-2" onclick="handleLeave(${req.id}, 'ไม่อนุมัติ')"><i class="fa-solid fa-xmark"></i></button></td></tr>`;
+                });
+            }
+
+            // Render History
+            const historyTbody = document.getElementById('adminHistoryTable');
+            document.getElementById('adminHistoryCount').innerText = `${leaveRequests.length} รายการ`;
+            if (leaveRequests.length === 0) {
+                historyTbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3">ยังไม่มีประวัติการลาในระบบ</td></tr>`;
+            } else {
+                historyTbody.innerHTML = '';
+                leaveRequests.forEach(req => {
+                    let badge = req.status === 'อนุมัติ' ? 'bg-success bg-opacity-10 text-success' : (req.status === 'ไม่อนุมัติ' ? 'bg-danger bg-opacity-10 text-danger' : 'bg-warning bg-opacity-10 text-warning');
+                    historyTbody.innerHTML += `<tr><td><span class="fw-semibold">${req.empName}</span></td><td>${req.type}</td><td>${req.startDate} ถึง ${req.endDate}</td><td class="text-center fw-bold">${req.days} วัน</td><td class="text-center"><span class="badge ${badge}">${req.status}</span></td><td><small class="text-muted">${req.approver}</small></td></tr>`;
+                });
+            }
+
+            // Render Employees
+            const allEmpTbody = document.getElementById('allEmployeesTable');
+            allEmpTbody.innerHTML = '';
+            employees.forEach(emp => {
+                allEmpTbody.innerHTML += `<tr><td><strong>${emp.id}</strong> - ${emp.name}</td><td>${emp.position} (${emp.dept})</td><td class="text-center">${emp.sickRemain} วัน</td><td class="text-center">${emp.personalRemain} วัน</td><td class="text-center">${emp.vacationRemain} วัน</td></tr>`;
+            });
+        }
+
+        function handleLeave(id, action) {
+            let req = leaveRequests.find(r => r.id === id);
+            if (!req) return;
+            req.status = action;
+            req.approver = `${currentAdminName} (${action === 'อนุมัติ' ? 'อนุมัติแล้ว' : 'ปฏิเสธแล้ว'})`;
+
+            if (action === 'อนุมัติ') {
+                let emp = employees[req.empIndex];
+                if (emp) {
+                    let remainKey = req.type === 'ลาป่วย' ? 'sickRemain' : (req.type === 'ลากิจ' ? 'personalRemain' : 'vacationRemain');
+                    emp[remainKey] = Math.max(0, emp[remainKey] - req.days);
+                }
+            }
+            localStorage.setItem('employees', JSON.stringify(employees));
+            localStorage.setItem('leaveRequests', JSON.stringify(leaveRequests));
+            renderAdminData();
+            alert(`ดำเนินการ ${action} คำขอเรียบร้อยแล้ว`);
+        }
+
+        function resetSystem() {
+            if (confirm('คุณต้องการรีเซ็ตข้อมูลทั้งหมดหรือไม่?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
