@@ -3,22 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบจัดการลางานออนไลน์ - Leave Management System</title>
+    <title>เข้าสู่ระบบ - LeaveFlow Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8f9fa 100%);
             color: #334155;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .navbar-brand { font-weight: 700; color: #0f172a !important; }
+        .login-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            background: white;
+            width: 100%;
+            max-width: 440px;
+            overflow: hidden;
+        }
         .card {
             border: none;
             border-radius: 16px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            transition: transform 0.2s ease;
         }
         .stat-card {
             border-radius: 16px;
@@ -40,12 +51,12 @@
         .btn-primary {
             background-color: #2563eb;
             border-color: #2563eb;
-            border-radius: 10px;
-            padding: 10px 20px;
+            border-radius: 12px;
+            padding: 12px 20px;
             font-weight: 600;
         }
         .form-control, .form-select {
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 12px;
             border: 1px solid #e2e8f0;
         }
@@ -55,210 +66,251 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-                <div class="bg-primary text-white rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                    <i class="fa-solid fa-calendar-check"></i>
-                </div>
-                <span>LeaveFlow Pro</span>
-            </a>
-            
-            <div class="d-flex align-items-center gap-3">
-                <div class="text-end d-none d-sm-block">
-                    <div id="userNameDisplay" class="fw-bold text-dark">คุณสมชาย ใจดี</div>
-                    <div id="userRoleDisplay" class="text-muted small">Senior Developer (IT)</div>
-                </div>
-                <div class="btn-group shadow-sm" role="group">
-                    <button type="button" class="btn btn-outline-primary active px-3" id="btnRoleUser" onclick="switchRole('user')">พนักงาน</button>
-                    <button type="button" class="btn btn-outline-warning text-dark fw-medium px-3" id="btnRoleAdmin" onclick="promptAdminPin()">ผู้บริหาร (Admin)</button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container py-4">
-        
-        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
-            <div>
-                <h1 class="h3 fw-bold mb-1" id="pageTitle">แดชบอร์ดพนักงาน</h1>
-                <p class="text-muted mb-0">ระบบจัดการลางานออนไลน์ (เลือกรายชื่อ หรือพิมพ์ชื่อใช้งานเองได้)</p>
-            </div>
-            
-            <!-- ส่วนเลือกพนักงาน หรือ พิมพ์ชื่อเอง -->
-            <div id="employeeSelectorWrapper" class="card p-3 shadow-sm bg-white" style="width: 320px;">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <label class="form-label small fw-bold mb-0 text-primary"><i class="fa-solid fa-user-gear me-1"></i>จัดการผู้ใช้งาน</label>
-                    <div class="form-check form-switch m-0">
-                        <input class="form-check-input" type="checkbox" id="customModeToggle" onchange="toggleCustomMode(this.checked)">
-                        <label class="form-check-label small text-muted" for="customModeToggle">พิมพ์เอง</label>
-                    </div>
-                </div>
-
-                <!-- โหมดเลือกจาก Dropdown -->
-                <div id="selectModeDiv">
-                    <select class="form-select form-select-sm bg-light fw-medium" id="employeeSelect" onchange="changeEmployee(this.value)">
-                        <!-- เติมด้วย JS -->
-                    </select>
-                </div>
-
-                <!-- โหมดพิมพ์ชื่อเอง -->
-                <div id="customModeDiv" class="d-none">
-                    <div class="vstack gap-2">
-                        <input type="text" class="form-control form-control-sm" id="customEmpName" placeholder="ชื่อ-นามสกุล เช่น คุณพิชญ์สินี">
-                        <div class="row g-1">
-                            <div class="col-7">
-                                <input type="text" class="form-control form-control-sm" id="customEmpPos" placeholder="ตำแหน่ง">
-                            </div>
-                            <div class="col-5">
-                                <input type="text" class="form-control form-control-sm" id="customEmpDept" placeholder="แผนก">
-                            </div>
+    <!-- ================= หน้าเข้าสู่ระบบ (Login Section) ================= -->
+    <div id="loginSection" class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="login-card p-4 p-md-5 mx-auto">
+                    <div class="text-center mb-4">
+                        <div class="bg-primary text-white rounded-4 p-3 d-inline-flex align-items-center justify-content-center shadow-sm mb-3" style="width: 64px; height: 64px;">
+                            <i class="fa-solid fa-calendar-check fs-2"></i>
                         </div>
-                        <button class="btn btn-sm btn-primary w-100 mt-1" onclick="saveCustomEmployee()">ใช้งานชื่อนี้</button>
+                        <h3 class="fw-bold text-dark mb-1">LeaveFlow Pro</h3>
+                        <p class="text-muted small">ระบบจัดการลางานออนไลน์สำหรับองค์กร</p>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= โหมดพนักงาน ================= -->
-        <div id="userSection">
-            <div class="row g-4 mb-4">
-                <div class="col-md-4">
-                    <div class="stat-card sick">
-                        <span class="text-uppercase small fw-semibold opacity-75">ลาป่วยคงเหลือ</span>
-                        <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblSick">30</span> <span class="fs-5 fw-normal">วัน</span></h2>
-                        <p class="small opacity-75 mb-0 mt-1">จากโควตา 30 วัน</p>
-                        <i class="fa-solid fa-user-doctor"></i>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="stat-card business">
-                        <span class="text-uppercase small fw-semibold opacity-75">ลากิจคงเหลือ</span>
-                        <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblPersonal">6</span> <span class="fs-5 fw-normal">วัน</span></h2>
-                        <p class="small opacity-75 mb-0 mt-1">จากโควตา 6 วัน</p>
-                        <i class="fa-solid fa-briefcase"></i>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="stat-card vacation">
-                        <span class="text-uppercase small fw-semibold opacity-75">ลาพักผ่อนคงเหลือ</span>
-                        <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblVacation">10</span> <span class="fs-5 fw-normal">วัน</span></h2>
-                        <p class="small opacity-75 mb-0 mt-1">จากโควตา 10 วัน</p>
-                        <i class="fa-solid fa-umbrella-beach"></i>
-                    </div>
-                </div>
-            </div>
+                    <!-- แท็บเลือกระหว่าง เลือกรายชื่อ กับ พิมพ์เอง -->
+                    <ul class="nav nav-pills nav-fill mb-4 bg-light p-1 rounded-3" id="loginTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active py-2 rounded-3 fw-medium" id="select-tab" data-bs-toggle="pill" data-bs-target="#selectContent" type="button" role="tab">เลือกรายชื่อพนักงาน</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link py-2 rounded-3 fw-medium" id="custom-tab" data-bs-toggle="pill" data-bs-target="#customContent" type="button" role="tab">พิมพ์ชื่อ-ตำแหน่งเอง</button>
+                        </li>
+                    </ul>
 
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="card p-4 h-100">
-                        <h5 class="fw-bold mb-3"><i class="fa-solid fa-file-pen text-primary me-2"></i>ยื่นคำขอลาใหม่</h5>
-                        <form id="leaveForm" onsubmit="submitLeave(event)">
+                    <div class="tab-content" id="loginTabContent">
+                        <!-- โหมดเลือกรายชื่อ -->
+                        <div class="tab-pane fade show active" id="selectContent" role="tabpanel">
                             <div class="mb-3">
-                                <label class="form-label small fw-semibold">ประเภทการลา</label>
-                                <select class="form-select" id="leaveType" required>
-                                    <option value="ลาป่วย">ลาป่วย</option>
-                                    <option value="ลากิจ">ลากิจ</option>
-                                    <option value="ลาพักผ่อน">ลาพักผ่อน</option>
+                                <label class="form-label small fw-bold text-secondary">เลือกชื่อพนักงานของคุณ</label>
+                                <select class="form-select bg-light" id="loginEmployeeSelect">
+                                    <!-- บรรจุรายชื่อด้วย JavaScript -->
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label small fw-semibold">วันที่เริ่มต้น</label>
-                                <input type="date" class="form-control" id="startDate" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label small fw-semibold">ถึงวันที่</label>
-                                <input type="date" class="form-control" id="endDate" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label small fw-semibold">เหตุผลการลา</label>
-                                <textarea class="form-control" id="leaveReason" rows="3" placeholder="ระบุเหตุผลความจำเป็น..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100 py-2">
-                                <i class="fa-solid fa-paper-plane me-2"></i>ส่งคำขอลา
+                            <button type="button" class="btn btn-primary w-100 py-3 shadow-sm" onclick="loginAsEmployee(false)">
+                                <i class="fa-solid fa-right-to-bracket me-2"></i>เข้าสู่ระบบพนักงาน
                             </button>
-                        </form>
-                    </div>
-                </div>
+                        </div>
 
-                <div class="col-lg-8">
-                    <div class="card p-4 h-100">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="fw-bold mb-0"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>ประวัติการลางานของคุณ</h5>
-                            <span class="badge bg-light text-secondary border" id="userRecordCount">0 รายการ</span>
+                        <!-- โหมดพิมพ์เอง -->
+                        <div class="tab-pane fade" id="customContent" role="tabpanel">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-secondary">ชื่อ - นามสกุล</label>
+                                <input type="text" class="form-control" id="loginCustomName" placeholder="เช่น คุณพิชญ์สินี ทับพยุง">
+                            </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-7">
+                                    <label class="form-label small fw-bold text-secondary">ตำแหน่ง</label>
+                                    <input type="text" class="form-control" id="loginCustomPos" placeholder="เช่น HR Manager">
+                                </div>
+                                <div class="col-5">
+                                    <label class="form-label small fw-bold text-secondary">แผนก</label>
+                                    <input type="text" class="form-control" id="loginCustomDept" placeholder="เช่น HR">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary w-100 py-3 shadow-sm" onclick="loginAsEmployee(true)">
+                                <i class="fa-solid fa-user-pen me-2"></i>เข้าสู่ระบบด้วยชื่อนี้
+                            </button>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>ประเภท</th>
-                                        <th>ช่วงวันที่</th>
-                                        <th class="text-center">จำนวนวัน</th>
-                                        <th class="text-center">สถานะ</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="userHistoryTable">
-                                    <tr><td colspan="4" class="text-center text-muted py-3">ยังไม่มีประวัติการลา</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    </div>
+
+                    <hr class="my-4 text-muted opacity-25">
+
+                    <!-- ปุ่มทางเข้าผู้บริหาร -->
+                    <div class="text-center">
+                        <button type="button" class="btn btn-outline-warning text-dark fw-semibold w-100 py-2.5 rounded-3" onclick="promptAdminPin()">
+                            <i class="fa-solid fa-user-shield me-2"></i>เข้าสู่ระบบผู้บริหาร (Admin)
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- ================= โหมดผู้บริหาร (Admin) ================= -->
-        <div id="adminSection" class="d-none">
-            <div class="alert alert-warning shadow-sm mb-4 d-flex align-items-center justify-content-between rounded-4 p-3">
+
+    <!-- ================= แดชบอร์ดหลัก (ซ่อนไว้จนกว่าจะ Login) ================= -->
+    <div id="mainAppSection" class="d-none w-100">
+        <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                    <div class="bg-primary text-white rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <span>LeaveFlow Pro</span>
+                </a>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <div class="text-end d-none d-sm-block">
+                        <div id="userNameDisplay" class="fw-bold text-dark">คุณสมชาย ใจดี</div>
+                        <div id="userRoleDisplay" class="text-muted small">Senior Developer (IT)</div>
+                    </div>
+                    <div class="btn-group shadow-sm" role="group">
+                        <button type="button" class="btn btn-outline-primary active px-3" id="btnRoleUser" onclick="switchRole('user')">พนักงาน</button>
+                        <button type="button" class="btn btn-outline-warning text-dark fw-medium px-3" id="btnRoleAdmin" onclick="promptAdminPin()">ผู้บริหาร (Admin)</button>
+                    </div>
+                    <button class="btn btn-outline-danger btn-sm px-3 ms-2" onclick="logout()" title="ออกจากระบบ">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container py-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
                 <div>
-                    <i class="fa-solid fa-user-shield me-2"></i> ผู้บริหารสูงสุด: <strong class="text-dark">คุณพิชญ์สินี ทับพยุง</strong>
-                </div>
-                <button class="btn btn-danger btn-sm px-3 fw-semibold rounded-pill shadow-sm" onclick="resetSystem()">
-                    <i class="fa-solid fa-rotate-right me-1"></i> รีเซ็ตระบบใหม่ทั้งหมด
-                </button>
-            </div>
-
-            <!-- รายการรออนุมัติ -->
-            <div class="card p-4 mb-4">
-                <h5 class="fw-bold mb-3"><i class="fa-solid fa-list-check text-warning me-2"></i>รายการคำขอลา (รออนุมัติ)</h5>
-                <div class="table-responsive">
-                    <table class="table align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>พนักงาน</th>
-                                <th>ประเภท</th>
-                                <th>ช่วงวันที่</th>
-                                <th class="text-center">วัน</th>
-                                <th class="text-center">จัดการ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminApprovalTable">
-                            <tr><td colspan="5" class="text-center text-muted py-3">ไม่มีรายการรออนุมัติ</td></tr>
-                        </tbody>
-                    </table>
+                    <h1 class="h3 fw-bold mb-1" id="pageTitle">แดชบอร์ดพนักงาน</h1>
+                    <p class="text-muted mb-0">ระบบจัดการลางานออนไลน์</p>
                 </div>
             </div>
 
-            <!-- สรุปโควต้าพนักงานทั้งหมด -->
-            <div class="card p-4 mb-4">
-                <h5 class="fw-bold mb-3"><i class="fa-solid fa-users me-2 text-success"></i>สรุปสถานะวันลาพนักงานทั้งหมด</h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle">
-                        <thead class="table-light text-center">
-                            <tr>
-                                <th class="text-start">รหัส / ชื่อพนักงาน</th>
-                                <th>ตำแหน่ง / แผนก</th>
-                                <th>ลาป่วย (คงเหลือ)</th>
-                                <th>ลากิจ (คงเหลือ)</th>
-                                <th>ลาพักร้อน (คงเหลือ)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="allEmployeesTable"></tbody>
-                    </table>
+            <!-- ================= โหมดพนักงาน ================= -->
+            <div id="userSection">
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <div class="stat-card sick">
+                            <span class="text-uppercase small fw-semibold opacity-75">ลาป่วยคงเหลือ</span>
+                            <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblSick">30</span> <span class="fs-5 fw-normal">วัน</span></h2>
+                            <p class="small opacity-75 mb-0 mt-1">จากโควตา 30 วัน</p>
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card business">
+                            <span class="text-uppercase small fw-semibold opacity-75">ลากิจคงเหลือ</span>
+                            <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblPersonal">6</span> <span class="fs-5 fw-normal">วัน</span></h2>
+                            <p class="small opacity-75 mb-0 mt-1">จากโควตา 6 วัน</p>
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card vacation">
+                            <span class="text-uppercase small fw-semibold opacity-75">ลาพักผ่อนคงเหลือ</span>
+                            <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblVacation">10</span> <span class="fs-5 fw-normal">วัน</span></h2>
+                            <p class="small opacity-75 mb-0 mt-1">จากโควตา 10 วัน</p>
+                            <i class="fa-solid fa-umbrella-beach"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="card p-4 h-100">
+                            <h5 class="fw-bold mb-3"><i class="fa-solid fa-file-pen text-primary me-2"></i>ยื่นคำขอลาใหม่</h5>
+                            <form id="leaveForm" onsubmit="submitLeave(event)">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">ประเภทการลา</label>
+                                    <select class="form-select" id="leaveType" required>
+                                        <option value="ลาป่วย">ลาป่วย</option>
+                                        <option value="ลากิจ">ลากิจ</option>
+                                        <option value="ลาพักผ่อน">ลาพักผ่อน</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">วันที่เริ่มต้น</label>
+                                    <input type="date" class="form-control" id="startDate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">ถึงวันที่</label>
+                                    <input type="date" class="form-control" id="endDate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">เหตุผลการลา</label>
+                                    <textarea class="form-control" id="leaveReason" rows="3" placeholder="ระบุเหตุผลความจำเป็น..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-2">
+                                    <i class="fa-solid fa-paper-plane me-2"></i>ส่งคำขอลา
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <div class="card p-4 h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold mb-0"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>ประวัติการลางานของคุณ</h5>
+                                <span class="badge bg-light text-secondary border" id="userRecordCount">0 รายการ</span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>ประเภท</th>
+                                            <th>ช่วงวันที่</th>
+                                            <th class="text-center">จำนวนวัน</th>
+                                            <th class="text-center">สถานะ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userHistoryTable">
+                                        <tr><td colspan="4" class="text-center text-muted py-3">ยังไม่มีประวัติการลา</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= โหมดผู้บริหาร (Admin) ================= -->
+            <div id="adminSection" class="d-none">
+                <div class="alert alert-warning shadow-sm mb-4 d-flex align-items-center justify-content-between rounded-4 p-3">
+                    <div>
+                        <i class="fa-solid fa-user-shield me-2"></i> ผู้บริหารสูงสุด: <strong class="text-dark">คุณพิชญ์สินี ทับพยุง</strong>
+                    </div>
+                    <button class="btn btn-danger btn-sm px-3 fw-semibold rounded-pill shadow-sm" onclick="resetSystem()">
+                        <i class="fa-solid fa-rotate-right me-1"></i> รีเซ็ตระบบใหม่ทั้งหมด
+                    </button>
+                </div>
+
+                <div class="card p-4 mb-4">
+                    <h5 class="fw-bold mb-3"><i class="fa-solid fa-list-check text-warning me-2"></i>รายการคำขอลา (รออนุมัติ)</h5>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>พนักงาน</th>
+                                    <th>ประเภท</th>
+                                    <th>ช่วงวันที่</th>
+                                    <th class="text-center">วัน</th>
+                                    <th class="text-center">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminApprovalTable">
+                                <tr><td colspan="5" class="text-center text-muted py-3">ไม่มีรายการรออนุมัติ</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card p-4 mb-4">
+                    <h5 class="fw-bold mb-3"><i class="fa-solid fa-users me-2 text-success"></i>สรุปสถานะวันลาพนักงานทั้งหมด</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th class="text-start">รหัส / ชื่อพนักงาน</th>
+                                    <th>ตำแหน่ง / แผนก</th>
+                                    <th>ลาป่วย (คงเหลือ)</th>
+                                    <th>ลากิจ (คงเหลือ)</th>
+                                    <th>ลาพักร้อน (คงเหลือ)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allEmployeesTable"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- Modal PIN -->
@@ -295,8 +347,9 @@
         ];
 
         let employees = JSON.parse(localStorage.getItem('employees')) || JSON.parse(JSON.stringify(defaultEmployees));
-        let currentEmpIndex = 0;
+        let currentEmpIndex = parseInt(localStorage.getItem('currentEmpIndex')) || 0;
         let leaveRequests = JSON.parse(localStorage.getItem('leaveRequests')) || [];
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
         const publicHolidays = [
             "2026-01-01", "2026-03-03", "2026-04-06", "2026-04-13", "2026-04-14", 
@@ -321,72 +374,79 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            initEmployeeDropdown();
-            updateUI();
+            initLoginDropdown();
+            if (isLoggedIn) {
+                showMainApp();
+            } else {
+                showLoginScreen();
+            }
         });
 
-        function initEmployeeDropdown() {
-            const select = document.getElementById('employeeSelect');
+        function initLoginDropdown() {
+            const select = document.getElementById('loginEmployeeSelect');
             select.innerHTML = '';
             employees.forEach((emp, idx) => {
                 select.innerHTML += `<option value="${idx}">${emp.id} - ${emp.name} (${emp.position})</option>`;
             });
-            select.value = currentEmpIndex;
         }
 
-        function changeEmployee(index) {
-            currentEmpIndex = parseInt(index);
-            updateUI();
-        }
-
-        function toggleCustomMode(isCustom) {
-            const selectDiv = document.getElementById('selectModeDiv');
-            const customDiv = document.getElementById('customModeDiv');
+        function loginAsEmployee(isCustom) {
             if (isCustom) {
-                selectDiv.classList.add('d-none');
-                customDiv.classList.remove('d-none');
+                const name = document.getElementById('loginCustomName').value.trim();
+                const position = document.getElementById('loginCustomPos').value.trim() || 'พนักงานทั่วไป';
+                const dept = document.getElementById('loginCustomDept').value.trim() || 'ทั่วไป';
+
+                if (!name) {
+                    alert('กรุณากรอกชื่อ-นามสกุลของคุณ');
+                    return;
+                }
+
+                let existingIdx = employees.findIndex(e => e.name === name);
+                if (existingIdx !== -1) {
+                    currentEmpIndex = existingIdx;
+                } else {
+                    const newEmp = {
+                        id: "EMP" + String(employees.length + 1).padStart(2, '0'),
+                        name: name,
+                        position: position,
+                        dept: dept,
+                        sickRemain: 30,
+                        personalRemain: 6,
+                        vacationRemain: 10
+                    };
+                    employees.push(newEmp);
+                    currentEmpIndex = employees.length - 1;
+                    saveStorage();
+                }
             } else {
-                selectDiv.classList.remove('d-none');
-                customDiv.classList.add('d-none');
-                updateUI();
+                const select = document.getElementById('loginEmployeeSelect');
+                currentEmpIndex = parseInt(select.value);
             }
+
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('currentEmpIndex', currentEmpIndex);
+            showMainApp();
         }
 
-        function saveCustomEmployee() {
-            const name = document.getElementById('customEmpName').value.trim();
-            const position = document.getElementById('customEmpPos').value.trim() || 'พนักงานทั่วไป';
-            const dept = document.getElementById('customEmpDept').value.trim() || 'ทั่วไป';
+        function logout() {
+            isLoggedIn = false;
+            localStorage.setItem('isLoggedIn', 'false');
+            showLoginScreen();
+        }
 
-            if (!name) {
-                alert('กรุณากรอกชื่อ-นามสกุล');
-                return;
-            }
+        function showLoginScreen() {
+            document.getElementById('loginSection').classList.remove('d-none');
+            document.getElementById('mainAppSection').classList.add('d-none');
+            document.body.style.background = "linear-gradient(135deg, #f0f4ff 0%, #f8f9fa 100%)";
+            initLoginDropdown();
+        }
 
-            // ตรวจสอบว่ามีชื่อนี้อยู่แล้วในระบบไหม ถ้ามีให้เลือกคนนั้นเลย ถ้าไม่มีให้สร้างใหม่
-            let existingIdx = employees.findIndex(e => e.name === name);
-            if (existingIdx !== -1) {
-                currentEmpIndex = existingIdx;
-            } else {
-                const newEmp = {
-                    id: "EMP" + String(employees.length + 1).padStart(2, '0'),
-                    name: name,
-                    position: position,
-                    dept: dept,
-                    sickRemain: 30,
-                    personalRemain: 6,
-                    vacationRemain: 10
-                };
-                employees.push(newEmp);
-                currentEmpIndex = employees.length - 1;
-                saveStorage();
-                initEmployeeDropdown();
-            }
-
-            document.getElementById('customModeToggle').checked = false;
-            toggleCustomMode(false);
-            document.getElementById('employeeSelect').value = currentEmpIndex;
-            updateUI();
-            alert(`เปลี่ยนผู้ใช้งานเป็น: ${name} สำเร็จ!`);
+        function showMainApp() {
+            document.getElementById('loginSection').classList.add('d-none');
+            document.getElementById('mainAppSection').classList.remove('d-none');
+            document.body.style.background = "#f8f9fa";
+            switchRole('user');
         }
 
         function updateUI() {
@@ -488,7 +548,6 @@
             const btnUser = document.getElementById('btnRoleUser');
             const btnAdmin = document.getElementById('btnRoleAdmin');
             const pageTitle = document.getElementById('pageTitle');
-            const empSelector = document.getElementById('employeeSelectorWrapper');
 
             if (role === 'admin') {
                 userSec.classList.add('d-none');
@@ -496,7 +555,6 @@
                 btnAdmin.className = "btn btn-warning text-dark fw-medium px-3 active";
                 btnUser.className = "btn btn-outline-primary px-3";
                 pageTitle.innerText = "แดชบอร์ดผู้บริหาร (Admin Dashboard)";
-                empSelector.classList.add('d-none');
                 
                 document.getElementById('userNameDisplay').innerText = "คุณพิชญ์สินี ทับพยุง";
                 document.getElementById('userRoleDisplay').innerText = "Executive / Admin";
@@ -508,7 +566,6 @@
                 btnUser.className = "btn btn-primary px-3 active";
                 btnAdmin.className = "btn btn-outline-warning text-dark fw-medium px-3";
                 pageTitle.innerText = "แดชบอร์ดพนักงาน";
-                empSelector.classList.remove('d-none');
                 updateUI();
             }
         }
@@ -576,14 +633,16 @@
                 localStorage.clear();
                 employees = JSON.parse(JSON.stringify(defaultEmployees));
                 leaveRequests = [];
+                isLoggedIn = false;
                 alert('รีเซ็ตระบบเรียบร้อยแล้ว!');
-                switchRole('user');
+                showLoginScreen();
             }
         }
 
         function saveStorage() {
             localStorage.setItem('leaveRequests', JSON.stringify(leaveRequests));
             localStorage.setItem('employees', JSON.stringify(employees));
+            localStorage.setItem('currentEmpIndex', currentEmpIndex);
         }
     </script>
 </body>
