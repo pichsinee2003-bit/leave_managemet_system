@@ -103,7 +103,7 @@
                             </button>
                         </div>
 
-                        <!-- โหมดพิมพ์ชื่อเอง (เอาตำแหน่ง/แผนกออกแล้ว) -->
+                        <!-- โหมดพิมพ์ชื่อเอง -->
                         <div class="tab-pane fade" id="customContent" role="tabpanel">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold text-secondary">ชื่อ - นามสกุล</label>
@@ -246,10 +246,11 @@
                                             <th>ช่วงวันที่</th>
                                             <th class="text-center">จำนวนวัน</th>
                                             <th class="text-center">สถานะ</th>
+                                            <th>ผู้อนุมัติ</th>
                                         </tr>
                                     </thead>
                                     <tbody id="userHistoryTable">
-                                        <tr><td colspan="4" class="text-center text-muted py-3">ยังไม่มีประวัติการลา</td></tr>
+                                        <tr><td colspan="5" class="text-center text-muted py-3">ยังไม่มีประวัติการลา</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -260,15 +261,16 @@
 
             <!-- ================= โหมดผู้บริหาร (Admin) ================= -->
             <div id="adminSection" class="d-none">
-                <div class="alert alert-warning shadow-sm mb-4 d-flex align-items-center justify-content-between rounded-4 p-3">
+                <div class="alert alert-warning shadow-sm mb-4 d-flex align-items-center justify-content-between rounded-4 p-3 flex-wrap gap-2">
                     <div>
-                        <i class="fa-solid fa-user-shield me-2"></i> ผู้บริหารสูงสุด: <strong class="text-dark">คุณพิชญ์สินี ทับพยุง</strong>
+                        <i class="fa-solid fa-user-shield me-2"></i> คณะผู้บริหาร: <strong class="text-dark">คุณพิชญ์สินี ทับพยุง และ คุณณัฐพงศ์ พรมสงฆ์</strong>
                     </div>
                     <button class="btn btn-danger btn-sm px-3 fw-semibold rounded-pill shadow-sm" onclick="resetSystem()">
                         <i class="fa-solid fa-rotate-right me-1"></i> รีเซ็ตระบบใหม่ทั้งหมด
                     </button>
                 </div>
 
+                <!-- รายการรออนุมัติ -->
                 <div class="card p-4 mb-4">
                     <h5 class="fw-bold mb-3"><i class="fa-solid fa-list-check text-warning me-2"></i>รายการคำขอลา (รออนุมัติ)</h5>
                     <div class="table-responsive">
@@ -279,16 +281,43 @@
                                     <th>ประเภท</th>
                                     <th>ช่วงวันที่</th>
                                     <th class="text-center">วัน</th>
+                                    <th>เหตุผล</th>
                                     <th class="text-center">จัดการ</th>
                                 </tr>
                             </thead>
                             <tbody id="adminApprovalTable">
-                                <tr><td colspan="5" class="text-center text-muted py-3">ไม่มีรายการรออนุมัติ</td></tr>
+                                <tr><td colspan="6" class="text-center text-muted py-3">ไม่มีรายการรออนุมัติ</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
+                <!-- ประวัติการลอย้อนหลังทั้งหมดในระบบ -->
+                <div class="card p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0"><i class="fa-solid fa-clock-rotate-left text-secondary me-2"></i>ประวัติการลอย้อนหลังทั้งหมด (Admin Log)</h5>
+                        <span class="badge bg-light text-secondary border" id="adminHistoryCount">0 รายการ</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>พนักงาน</th>
+                                    <th>ประเภท</th>
+                                    <th>ช่วงวันที่</th>
+                                    <th class="text-center">จำนวนวัน</th>
+                                    <th class="text-center">สถานะ</th>
+                                    <th>ผู้ดำเนินการ (ผู้อนุมัติ/ผู้ปฏิเสธ)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminHistoryTable">
+                                <tr><td colspan="6" class="text-center text-muted py-3">ยังไม่มีประวัติการลาในระบบ</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- สรุปวันลาพนักงานทั้งหมด -->
                 <div class="card p-4 mb-4">
                     <h5 class="fw-bold mb-3"><i class="fa-solid fa-users me-2 text-success"></i>สรุปสถานะวันลาพนักงานทั้งหมด[cite: 7]</h5>
                     <div class="table-responsive">
@@ -312,16 +341,29 @@
 
     <!-- Modal PIN -->
     <div class="modal fade" id="pinModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content border-0 shadow-lg rounded-4">
                 <div class="modal-body text-center p-4">
                     <div class="mb-3 text-warning fs-1"><i class="fa-solid fa-shield-halved"></i></div>
-                    <h5 class="fw-bold mb-1">ยืนยันสิทธิ์ผู้บริหาร</h5>
-                    <p class="text-muted small mb-2">ผู้บริหาร: <strong>คุณพิชญ์สินี ทับพยุง</strong></p>
-                    <input type="password" id="pinInput" class="form-control text-center fs-4 mb-3" placeholder="••••" maxlength="4">
-                    <div class="d-flex gap-2">
+                    <h5 class="fw-bold mb-1">เลือกผู้บริหารเพื่อเข้าสู่ระบบ</h5>
+                    <p class="text-muted small mb-3">กรุณาเลือกชื่อของคุณและกรอกรหัส PIN</p>
+                    
+                    <div class="mb-3 text-start">
+                        <label class="form-label small fw-semibold text-secondary">รายชื่อผู้บริหาร</label>
+                        <select id="adminNameSelect" class="form-select bg-light">
+                            <option value="คุณพิชญ์สินี ทับพยุง">คุณพิชญ์สินี ทับพยุง</option>
+                            <option value="คุณณัฐพงศ์ พรมสงฆ์">คุณณัฐพงศ์ พรมสงฆ์</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3 text-start">
+                        <label class="form-label small fw-semibold text-secondary">รหัส PIN ผู้บริหาร</label>
+                        <input type="password" id="pinInput" class="form-control text-center fs-4" placeholder="••••" maxlength="4">
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
                         <button type="button" class="btn btn-light w-50" data-bs-dismiss="modal">ยกเลิก</button>
-                        <button type="button" class="btn btn-warning w-50 fw-medium" onclick="verifyPin()">ยืนยัน</button>
+                        <button type="button" class="btn btn-warning w-50 fw-medium text-dark" onclick="verifyPin()">ยืนยัน</button>
                     </div>
                 </div>
             </div>
@@ -347,6 +389,7 @@
         let currentEmpIndex = parseInt(localStorage.getItem('currentEmpIndex')) || 0;
         let leaveRequests = JSON.parse(localStorage.getItem('leaveRequests')) || [];
         let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        let currentAdminName = localStorage.getItem('currentAdminName') || 'คุณพิชญ์สินี ทับพยุง';
 
         const publicHolidays = [
             "2026-01-01", "2026-03-03", "2026-04-06", "2026-04-13", "2026-04-14", 
@@ -493,7 +536,8 @@
                 endDate: endDate,
                 days: days,
                 reason: reason,
-                status: 'รออนุมัติ'
+                status: 'รออนุมัติ',
+                approver: '-'
             };
 
             leaveRequests.unshift(newReq);
@@ -509,7 +553,7 @@
             document.getElementById('userRecordCount').innerText = `${myReqs.length} รายการ`;
 
             if (myReqs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-3">ยังไม่มีประวัติการลา</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-3">ยังไม่มีประวัติการลา</td></tr>`;
                 return;
             }
 
@@ -522,6 +566,7 @@
                         <td>${req.startDate} ถึง ${req.endDate}</td>
                         <td class="text-center fw-bold">${req.days} วัน</td>
                         <td class="text-center"><span class="badge ${badge}">${req.status}</span></td>
+                        <td><small class="text-muted">${req.approver}</small></td>
                     </tr>
                 `;
             });
@@ -536,7 +581,12 @@
 
         function verifyPin() {
             const pin = document.getElementById('pinInput').value;
+            const selectedAdmin = document.getElementById('adminNameSelect').value;
+
             if (pin === '1234') {
+                currentAdminName = selectedAdmin;
+                localStorage.setItem('currentAdminName', currentAdminName);
+
                 const pinModalEl = document.getElementById('pinModal');
                 const modalInstance = bootstrap.Modal.getInstance(pinModalEl);
                 if (modalInstance) {
@@ -572,7 +622,7 @@
                 adminNavBadge.classList.remove('d-none');
                 pageTitle.innerText = "แดชบอร์ดผู้บริหาร (Admin Dashboard)";
                 
-                document.getElementById('userNameDisplay').innerText = "คุณพิชญ์สินี ทับพยุง";
+                document.getElementById('userNameDisplay').innerText = currentAdminName;
                 document.getElementById('userRoleDisplay').innerText = "Executive / Admin";
 
                 renderAdminData();
@@ -587,11 +637,12 @@
         }
 
         function renderAdminData() {
+            // ตารางรายการรออนุมัติ
             const tbody = document.getElementById('adminApprovalTable');
             const pendingReqs = leaveRequests.filter(r => r.status === 'รออนุมัติ');
 
             if (pendingReqs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-3">ไม่มีรายการรออนุมัติ</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3">ไม่มีรายการรออนุมัติ</td></tr>`;
             } else {
                 tbody.innerHTML = '';
                 leaveRequests.forEach((req, idx) => {
@@ -602,15 +653,42 @@
                             <td>${req.type}</td>
                             <td>${req.startDate} ถึง ${req.endDate}</td>
                             <td class="text-center">${req.days} วัน</td>
+                            <td><small class="text-muted">${req.reason}</small></td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-success px-2 py-1" onclick="updateStatus(${idx}, 'อนุมัติ')"><i class="fa-solid fa-check"></i></button>
-                                <button class="btn btn-sm btn-danger px-2 py-1" onclick="updateStatus(${idx}, 'ไม่อนุมัติ')"><i class="fa-solid fa-xmark"></i></button>
+                                <button class="btn btn-sm btn-success px-2 py-1" onclick="updateStatus(${idx}, 'อนุมัติ')" title="อนุมัติ"><i class="fa-solid fa-check"></i></button>
+                                <button class="btn btn-sm btn-danger px-2 py-1" onclick="updateStatus(${idx}, 'ไม่อนุมัติ')" title="ไม่อนุมัติ"><i class="fa-solid fa-xmark"></i></button>
                             </td>
                         </tr>
                     `;
                 });
             }
 
+            // ตารางประวัติย้อนหลังทั้งหมดในหน้าแอดมิน (Admin History Log)
+            const adminHistoryTbody = document.getElementById('adminHistoryTable');
+            const processedReqs = leaveRequests.filter(r => r.status !== 'รออนุมัติ');
+            document.getElementById('adminHistoryCount').innerText = `${processedReqs.length} รายการ`;
+
+            if (processedReqs.length === 0) {
+                adminHistoryTbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3">ยังไม่มีประวัติการลาในระบบ</td></tr>`;
+            } else {
+                adminHistoryTbody.innerHTML = '';
+                leaveRequests.forEach((req) => {
+                    if (req.status === 'รออนุมัติ') return;
+                    let badge = req.status === 'อนุมัติ' ? 'bg-success bg-opacity-10 text-success' : 'bg-danger bg-opacity-10 text-danger';
+                    adminHistoryTbody.innerHTML += `
+                        <tr>
+                            <td class="fw-bold">${req.empName}</td>
+                            <td>${req.type}</td>
+                            <td>${req.startDate} ถึง ${req.endDate}</td>
+                            <td class="text-center">${req.days} วัน</td>
+                            <td class="text-center"><span class="badge ${badge}">${req.status}</span></td>
+                            <td><span class="badge bg-light text-dark border"><i class="fa-solid fa-user-shield me-1 text-warning"></i>${req.approver}</span></td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // ตารางสรุปวันลาพนักงานทั้งหมด
             const allEmpTbody = document.getElementById('allEmployeesTable');
             allEmpTbody.innerHTML = '';
             employees.forEach(emp => {
@@ -639,9 +717,10 @@
                 emp[remainKey] -= req.days;
             }
             req.status = status;
+            req.approver = currentAdminName; // บันทึกชื่อแอดมินที่กดอนุมัติ/ปฏิเสธ
             saveStorage();
             renderAdminData();
-            alert(`บันทึกสถานะ "${status}" และอัปเดตวันลาเรียบร้อยแล้ว`);
+            alert(`บันทึกสถานะ "${status}" โดย ${currentAdminName} เรียบร้อยแล้ว`);
         }
 
         function resetSystem() {
