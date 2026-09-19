@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เข้าสู่ระบบ - LeaveFlow Pro</title>
+    <title>เข้าสู่ระบบพนักงาน - LeaveFlow Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,53 +20,28 @@
         .login-card {
             border: none;
             border-radius: 20px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
             background: white;
             width: 100%;
             max-width: 440px;
-            overflow: hidden;
         }
-        .card {
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        }
+        .card { border: none; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         .stat-card {
-            border-radius: 16px;
-            color: white;
-            padding: 24px;
-            position: relative;
-            overflow: hidden;
+            border-radius: 16px; color: white; padding: 24px; position: relative; overflow: hidden;
         }
         .stat-card.sick { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
         .stat-card.business { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
         .stat-card.vacation { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-        .stat-card i {
-            position: absolute;
-            right: 20px;
-            bottom: 20px;
-            font-size: 3rem;
-            opacity: 0.15;
-        }
-        .btn-primary {
-            background-color: #2563eb;
-            border-color: #2563eb;
-            border-radius: 12px;
-            padding: 12px 20px;
-            font-weight: 600;
-        }
-        .form-control, .form-select {
-            border-radius: 12px;
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-        }
+        .stat-card i { position: absolute; right: 20px; bottom: 20px; font-size: 3rem; opacity: 0.15; }
+        .btn-primary { background-color: #2563eb; border-color: #2563eb; border-radius: 12px; padding: 12px; font-weight: 600; }
+        .form-control, .form-select { border-radius: 12px; padding: 12px; border: 1px solid #e2e8f0; }
         .table { vertical-align: middle; }
         .badge { padding: 8px 12px; border-radius: 8px; font-weight: 500; }
     </style>
 </head>
 <body>
 
-    <!-- ================= หน้าเข้าสู่ระบบ (Login Section) ================= -->
+    <!-- ================= หน้าล็อกอินพนักงาน ================= -->
     <div id="loginSection" class="container py-4">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -76,40 +51,32 @@
                             <i class="fa-solid fa-calendar-check fs-2"></i>
                         </div>
                         <h3 class="fw-bold text-dark mb-1">LeaveFlow Pro</h3>
-                        <p class="text-muted small">ระบบจัดการลางานออนไลน์สำหรับองค์กร</p>
+                        <p class="text-muted small">ระบบจัดการลางานออนไลน์ (สำหรับพนักงาน)</p>
                     </div>
 
-                    <!-- แท็บเลือกระหว่าง เลือกรายชื่อ กับ พิมพ์ชื่อเอง -->
-                    <ul class="nav nav-pills nav-fill mb-4 bg-light p-1 rounded-3" id="loginTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active py-2 rounded-3 fw-medium" id="select-tab" data-bs-toggle="pill" data-bs-target="#selectContent" type="button" role="tab">เลือกรายชื่อพนักงาน</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link py-2 rounded-3 fw-medium" id="custom-tab" data-bs-toggle="pill" data-bs-target="#customContent" type="button" role="tab">พิมพ์ชื่อเอง</button>
-                        </li>
+                    <ul class="nav nav-pills nav-fill mb-4 bg-light p-1 rounded-3" role="tablist">
+                        <li class="nav-item"><button class="nav-link active py-2 rounded-3 fw-medium" data-bs-toggle="pill" data-bs-target="#selectContent" type="button">เลือกรายชื่อพนักงาน</button></li>
+                        <li class="nav-item"><button class="nav-link py-2 rounded-3 fw-medium" data-bs-toggle="pill" data-bs-target="#customContent" type="button">พิมพ์ชื่อเอง</button></li>
                     </ul>
 
-                    <div class="tab-content" id="loginTabContent">
-                        <!-- โหมดเลือกรายชื่อ -->
-                        <div class="tab-pane fade show active" id="selectContent" role="tabpanel">
+                    <div class="tab-content">
+                        <!-- เลือกรายชื่อ -->
+                        <div class="tab-pane fade show active" id="selectContent">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold text-secondary">เลือกชื่อพนักงานของคุณ</label>
-                                <select class="form-select bg-light" id="loginEmployeeSelect">
-                                    <!-- บรรจุรายชื่อด้วย JavaScript -->
-                                </select>
+                                <select class="form-select bg-light" id="loginEmployeeSelect"></select>
                             </div>
-                            <!-- เพิ่มช่องกรอกรหัส PIN พนักงาน -->
                             <div class="mb-3">
                                 <label class="form-label small fw-bold text-secondary">รหัสผ่านพนักงาน (PIN)</label>
                                 <input type="password" id="employeePinInput" class="form-control text-center fs-5" placeholder="••••" maxlength="4">
                             </div>
-                            <button type="button" class="btn btn-primary w-100 py-3 shadow-sm" onclick="loginAsEmployee(false)">
+                            <button type="button" class="btn btn-primary w-100 shadow-sm" onclick="loginAsEmployee(false)">
                                 <i class="fa-solid fa-right-to-bracket me-2"></i>เข้าสู่ระบบพนักงาน
                             </button>
                         </div>
 
-                        <!-- โหมดพิมพ์ชื่อเอง -->
-                        <div class="tab-pane fade" id="customContent" role="tabpanel">
+                        <!-- พิมพ์ชื่อเอง -->
+                        <div class="tab-pane fade" id="customContent">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold text-secondary">ชื่อ - นามสกุล</label>
                                 <input type="text" class="form-control" id="loginCustomName" placeholder="เช่น คุณสมชาย ใจดี">
@@ -118,7 +85,7 @@
                                 <label class="form-label small fw-bold text-secondary">รหัสผ่านพนักงาน (PIN)</label>
                                 <input type="password" id="employeeCustomPinInput" class="form-control text-center fs-5" placeholder="••••" maxlength="4">
                             </div>
-                            <button type="button" class="btn btn-primary w-100 py-3 shadow-sm" onclick="loginAsEmployee(true)">
+                            <button type="button" class="btn btn-primary w-100 shadow-sm" onclick="loginAsEmployee(true)">
                                 <i class="fa-solid fa-user-pen me-2"></i>เข้าสู่ระบบด้วยชื่อนี้
                             </button>
                         </div>
@@ -126,19 +93,18 @@
 
                     <hr class="my-4 text-muted opacity-25">
 
-                    <!-- ปุ่มทางเข้าผู้บริหาร -->
+                    <!-- ลิงก์ไปหน้าแอดมิน -->
                     <div class="text-center">
-                        <button type="button" class="btn btn-outline-warning text-dark fw-semibold w-100 py-2.5 rounded-3" onclick="promptAdminPin()">
+                        <a href="admin.html" class="btn btn-outline-warning text-dark fw-semibold w-100 py-2.5 rounded-3 text-decoration-none">
                             <i class="fa-solid fa-user-shield me-2"></i>เข้าสู่ระบบผู้บริหาร (Admin)
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- ================= แดชบอร์ดหลัก (ซ่อนไว้จนกว่าจะ Login) ================= -->
+    <!-- ================= แดชบอร์ดพนักงาน (ซ่อนอยู่จนกว่าจะ Login) ================= -->
     <div id="mainAppSection" class="d-none w-100">
         <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3">
             <div class="container">
@@ -148,21 +114,12 @@
                     </div>
                     <span>LeaveFlow Pro</span>
                 </a>
-                
                 <div class="d-flex align-items-center gap-3">
                     <div class="text-end d-none d-sm-block">
-                        <div id="userNameDisplay" class="fw-bold text-dark">คุณสมชาย ใจดี</div>
-                        <div id="userRoleDisplay" class="text-muted small">Senior Developer (IT)</div>
+                        <div id="userNameDisplay" class="fw-bold text-dark">-</div>
+                        <div id="userRoleDisplay" class="text-muted small">-</div>
                     </div>
-                    
-                    <div id="userNavBadge" class="d-none">
-                        <span class="badge bg-primary px-3 py-2">พนักงาน</span>
-                    </div>
-
-                    <div id="adminNavBadge" class="d-none">
-                        <span class="badge bg-warning text-dark px-3 py-2 fw-medium"><i class="fa-solid fa-user-shield me-1"></i> ผู้บริหาร (Admin)</span>
-                    </div>
-
+                    <span class="badge bg-primary px-3 py-2">พนักงาน</span>
                     <button class="btn btn-outline-danger btn-sm px-3 ms-2" onclick="logout()" title="ออกจากระบบ">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     </button>
@@ -171,206 +128,89 @@
         </nav>
 
         <div class="container py-4">
-            <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
-                <div>
-                    <h1 class="h3 fw-bold mb-1" id="pageTitle">แดชบอร์ดพนักงาน</h1>
-                    <p class="text-muted mb-0">ระบบจัดการลางานออนไลน์</p>
+            <div class="mb-4">
+                <h1 class="h3 fw-bold mb-1">แดชบอร์ดพนักงาน</h1>
+                <p class="text-muted mb-0">ระบบจัดการลางานออนไลน์</p>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="stat-card sick">
+                        <span class="text-uppercase small fw-semibold opacity-75">ลาป่วยคงเหลือ</span>
+                        <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblSick">30</span> <span class="fs-5 fw-normal">วัน</span></h2>
+                        <i class="fa-solid fa-user-doctor"></i>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card business">
+                        <span class="text-uppercase small fw-semibold opacity-75">ลากิจคงเหลือ</span>
+                        <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblPersonal">6</span> <span class="fs-5 fw-normal">วัน</span></h2>
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card vacation">
+                        <span class="text-uppercase small fw-semibold opacity-75">ลาพักผ่อนคงเหลือ</span>
+                        <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblVacation">10</span> <span class="fs-5 fw-normal">วัน</span></h2>
+                        <i class="fa-solid fa-umbrella-beach"></i>
+                    </div>
                 </div>
             </div>
 
-            <!-- ================= โหมดพนักงาน ================= -->
-            <div id="userSection">
-                <div class="row g-4 mb-4">
-                    <div class="col-md-4">
-                        <div class="stat-card sick">
-                            <span class="text-uppercase small fw-semibold opacity-75">ลาป่วยคงเหลือ</span>
-                            <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblSick">30</span> <span class="fs-5 fw-normal">วัน</span></h2>
-                            <p class="small opacity-75 mb-0 mt-1">จากโควตา 30 วัน</p>
-                            <i class="fa-solid fa-user-doctor"></i>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="stat-card business">
-                            <span class="text-uppercase small fw-semibold opacity-75">ลากิจคงเหลือ</span>
-                            <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblPersonal">6</span> <span class="fs-5 fw-normal">วัน</span></h2>
-                            <p class="small opacity-75 mb-0 mt-1">จากโควตา 6 วัน</p>
-                            <i class="fa-solid fa-briefcase"></i>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="stat-card vacation">
-                            <span class="text-uppercase small fw-semibold opacity-75">ลาพักผ่อนคงเหลือ</span>
-                            <h2 class="display-5 fw-bold mt-2 mb-0"><span id="lblVacation">10</span> <span class="fs-5 fw-normal">วัน</span></h2>
-                            <p class="small opacity-75 mb-0 mt-1">จากโควตา 10 วัน</p>
-                            <i class="fa-solid fa-umbrella-beach"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-4">
-                    <div class="col-lg-4">
-                        <div class="card p-4 h-100">
-                            <h5 class="fw-bold mb-3"><i class="fa-solid fa-file-pen text-primary me-2"></i>ยื่นคำขอลาใหม่</h5>
-                            <form id="leaveForm" onsubmit="submitLeave(event)">
-                                <div class="mb-3">
-                                    <label class="form-label small fw-semibold">ประเภทการลา</label>
-                                    <select class="form-select" id="leaveType" required>
-                                        <option value="ลาป่วย">ลาป่วย</option>
-                                        <option value="ลากิจ">ลากิจ</option>
-                                        <option value="ลาพักผ่อน">ลาพักผ่อน</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label small fw-semibold">วันที่เริ่มต้น</label>
-                                    <input type="date" class="form-control" id="startDate" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label small fw-semibold">ถึงวันที่</label>
-                                    <input type="date" class="form-control" id="endDate" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label small fw-semibold">เหตุผลการลา</label>
-                                    <textarea class="form-control" id="leaveReason" rows="3" placeholder="ระบุเหตุผลความจำเป็น..." required></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100 py-2">
-                                    <i class="fa-solid fa-paper-plane me-2"></i>ส่งคำขอลา
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-8">
-                        <div class="card p-4 h-100">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="fw-bold mb-0"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>ประวัติการลางานของคุณ</h5>
-                                <span class="badge bg-light text-secondary border" id="userRecordCount">0 รายการ</span>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card p-4 h-100">
+                        <h5 class="fw-bold mb-3"><i class="fa-solid fa-file-pen text-primary me-2"></i>ยื่นคำขอลาใหม่</h5>
+                        <form id="leaveForm" onsubmit="submitLeave(event)">
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">ประเภทการลา</label>
+                                <select class="form-select" id="leaveType" required>
+                                    <option value="ลาป่วย">ลาป่วย</option>
+                                    <option value="ลากิจ">ลากิจ</option>
+                                    <option value="ลาพักผ่อน">ลาพักผ่อน</option>
+                                </select>
                             </div>
-                            <div class="table-responsive">
-                                <table class="table align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>ประเภท</th>
-                                            <th>ช่วงวันที่</th>
-                                            <th class="text-center">จำนวนวัน</th>
-                                            <th class="text-center">สถานะ</th>
-                                            <th>ผู้อนุมัติ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="userHistoryTable">
-                                        <tr><td colspan="5" class="text-center text-muted py-3">ยังไม่มีประวัติการลา</td></tr>
-                                    </tbody>
-                                </table>
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">วันที่เริ่มต้น</label>
+                                <input type="date" class="form-control" id="startDate" required>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">ถึงวันที่</label>
+                                <input type="date" class="form-control" id="endDate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">เหตุผลการลา</label>
+                                <textarea class="form-control" id="leaveReason" rows="3" placeholder="ระบุเหตุผล..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-2">
+                                <i class="fa-solid fa-paper-plane me-2"></i>ส่งคำขอลา
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card p-4 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold mb-0"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>ประวัติการลางานของคุณ</h5>
+                            <span class="badge bg-light text-secondary border" id="userRecordCount">0 รายการ</span>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ================= โหมดผู้บริหาร (Admin) ================= -->
-            <div id="adminSection" class="d-none">
-                <div class="alert alert-warning shadow-sm mb-4 d-flex align-items-center justify-content-between rounded-4 p-3 flex-wrap gap-2">
-                    <div>
-                        <i class="fa-solid fa-user-shield me-2"></i> ผู้บริหารที่เข้าสู่ระบบ: <strong class="text-dark" id="adminNameAlertDisplay">คุณพิชญ์สินี ทับพยุง</strong>
-                    </div>
-                    <button class="btn btn-danger btn-sm px-3 fw-semibold rounded-pill shadow-sm" onclick="resetSystem()">
-                        <i class="fa-solid fa-rotate-right me-1"></i> รีเซ็ตระบบใหม่ทั้งหมด
-                    </button>
-                </div>
-
-                <!-- รายการรออนุมัติ -->
-                <div class="card p-4 mb-4">
-                    <h5 class="fw-bold mb-3"><i class="fa-solid fa-list-check text-warning me-2"></i>รายการคำขอลา (รออนุมัติ)</h5>
-                    <div class="table-responsive">
-                        <table class="table align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>พนักงาน</th>
-                                    <th>ประเภท</th>
-                                    <th>ช่วงวันที่</th>
-                                    <th class="text-center">วัน</th>
-                                    <th>เหตุผล</th>
-                                    <th class="text-center">จัดการ</th>
-                                </tr>
-                            </thead>
-                            <tbody id="adminApprovalTable">
-                                <tr><td colspan="6" class="text-center text-muted py-3">ไม่มีรายการรออนุมัติ</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- ประวัติการลอย้อนหลังทั้งหมดในระบบ -->
-                <div class="card p-4 mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold mb-0"><i class="fa-solid fa-clock-rotate-left text-secondary me-2"></i>ประวัติการลอย้อนหลังทั้งหมด (Admin Log)</h5>
-                        <span class="badge bg-light text-secondary border" id="adminHistoryCount">0 รายการ</span>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>พนักงาน</th>
-                                    <th>ประเภท</th>
-                                    <th>ช่วงวันที่</th>
-                                    <th class="text-center">จำนวนวัน</th>
-                                    <th class="text-center">สถานะ</th>
-                                    <th>ผู้ดำเนินการ (ผู้อนุมัติ/ผู้ปฏิเสธ)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="adminHistoryTable">
-                                <tr><td colspan="6" class="text-center text-muted py-3">ยังไม่มีประวัติการลาในระบบ</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- สรุปวันลาพนักงานทั้งหมด -->
-                <div class="card p-4 mb-4">
-                    <h5 class="fw-bold mb-3"><i class="fa-solid fa-users me-2 text-success"></i>สรุปสถานะวันลาพนักงานทั้งหมด</h5>
-                    <div class="table-responsive">
-                        <table class="table table-bordered align-middle">
-                            <thead class="table-light text-center">
-                                <tr>
-                                    <th class="text-start">รหัส / ชื่อพนักงาน</th>
-                                    <th>ตำแหน่ง / แผนก</th>
-                                    <th>ลาป่วย (คงเหลือ)</th>
-                                    <th>ลากิจ (คงเหลือ)</th>
-                                    <th>ลาพักร้อน (คงเหลือ)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="allEmployeesTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal PIN ผู้บริหาร -->
-    <div class="modal fade" id="pinModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-md">
-            <div class="modal-content border-0 shadow-lg rounded-4">
-                <div class="modal-body text-center p-4">
-                    <div class="mb-3 text-warning fs-1"><i class="fa-solid fa-shield-halved"></i></div>
-                    <h5 class="fw-bold mb-1">เลือกผู้บริหารเพื่อเข้าสู่ระบบ</h5>
-                    <p class="text-muted small mb-3">กรุณาเลือกชื่อของคุณและกรอกรหัส PIN</p>
-                    
-                    <div class="mb-3 text-start">
-                        <label class="form-label small fw-semibold text-secondary">รายชื่อผู้บริหาร</label>
-                        <select id="adminNameSelect" class="form-select bg-light">
-                            <option value="คุณพิชญ์สินี ทับพยุง">คุณพิชญ์สินี ทับพยุง</option>
-                            <option value="คุณณัฐพงศ์ พรมสงฆ์">คุณณัฐพงศ์ พรมสงฆ์</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3 text-start">
-                        <label class="form-label small fw-semibold text-secondary">รหัส PIN ผู้บริหาร</label>
-                        <input type="password" id="pinInput" class="form-control text-center fs-4" placeholder="••••" maxlength="4">
-                    </div>
-
-                    <div class="d-flex gap-2 mt-4">
-                        <button type="button" class="btn btn-light w-50" data-bs-dismiss="modal">ยกเลิก</button>
-                        <button type="button" class="btn btn-warning w-50 fw-medium text-dark" onclick="verifyPin()">ยืนยัน</button>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ประเภท</th>
+                                        <th>ช่วงวันที่</th>
+                                        <th class="text-center">จำนวนวัน</th>
+                                        <th class="text-center">สถานะ</th>
+                                        <th>ผู้อนุมัติ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userHistoryTable">
+                                    <tr><td colspan="5" class="text-center text-muted py-3">ยังไม่มีประวัติการลา</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -395,26 +235,18 @@
         let employees = JSON.parse(localStorage.getItem('employees')) || JSON.parse(JSON.stringify(defaultEmployees));
         let currentEmpIndex = parseInt(localStorage.getItem('currentEmpIndex')) || 0;
         let leaveRequests = JSON.parse(localStorage.getItem('leaveRequests')) || [];
-        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        let currentAdminName = localStorage.getItem('currentAdminName') || 'คุณพิชญ์สินี ทับพยุง';
+        let isEmpLoggedIn = localStorage.getItem('isEmpLoggedIn') === 'true';
 
-        const publicHolidays = [
-            "2026-01-01", "2026-03-03", "2026-04-06", "2026-04-13", "2026-04-14", 
-            "2026-04-15", "2026-05-01", "2026-05-04", "2026-05-31", "2026-07-28", 
-            "2026-08-12", "2026-10-13", "2026-10-23", "2026-12-05", "2026-12-10", "2026-12-31"
-        ];
+        const publicHolidays = ["2026-01-01", "2026-04-13", "2026-04-14", "2026-04-15", "2026-05-01", "2026-07-28", "2026-08-12", "2026-10-13", "2026-12-05"];
 
         function calculateEffectiveDays(startStr, endStr) {
             let start = new Date(startStr);
             let end = new Date(endStr);
-            let count = 0;
-            let cur = new Date(start);
+            let count = 0, cur = new Date(start);
             while (cur <= end) {
                 let dayOfWeek = cur.getDay(); 
                 let dateStr = cur.toISOString().split('T')[0];
-                if (dayOfWeek !== 0 && !publicHolidays.includes(dateStr)) {
-                    count++;
-                }
+                if (dayOfWeek !== 0 && !publicHolidays.includes(dateStr)) count++;
                 cur.setDate(cur.getDate() + 1);
             }
             return count > 0 ? count : 1;
@@ -422,7 +254,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             initLoginDropdown();
-            if (isLoggedIn) {
+            if (isEmpLoggedIn) {
                 showMainApp();
             } else {
                 showLoginScreen();
@@ -438,79 +270,41 @@
         }
 
         function loginAsEmployee(isCustom) {
+            let pin = "";
             if (isCustom) {
                 const name = document.getElementById('loginCustomName').value.trim();
-                const pin = document.getElementById('employeeCustomPinInput').value.trim();
-
-                if (!name) {
-                    alert('กรุณากรอกชื่อ-นามสกุลของคุณ');
-                    return;
-                }
-                if (!pin) {
-                    alert('กรุณากรอกรหัสผ่าน (PIN)');
-                    return;
-                }
+                pin = document.getElementById('employeeCustomPinInput').value.trim();
+                if (!name || !pin) { alert('กรุณากรอกชื่อและรหัส PIN ให้ครบถ้วน'); return; }
 
                 let existingIdx = employees.findIndex(e => e.name === name);
                 if (existingIdx !== -1) {
-                    if (employees[existingIdx].pin && employees[existingIdx].pin !== pin) {
-                        alert('รหัส PIN ของพนักงานไม่ถูกต้อง (รหัสเริ่มต้นคือ 1234)');
-                        return;
-                    }
+                    if (employees[existingIdx].pin && employees[existingIdx].pin !== pin) { alert('รหัส PIN ไม่ถูกต้อง'); return; }
                     currentEmpIndex = existingIdx;
                 } else {
-                    // หากพิมพ์ชื่อใหม่ ระบบจะสร้างบัญชีพร้อมกำหนด PIN ที่กรอก
-                    const newEmp = {
-                        id: "EMP" + String(employees.length + 1).padStart(2, '0'),
-                        name: name,
-                        position: 'พนักงานทั่วไป',
-                        dept: 'ทั่วไป',
-                        pin: pin,
-                        sickRemain: 30,
-                        personalRemain: 6,
-                        vacationRemain: 10
-                    };
-                    employees.push(newEmp);
+                    employees.push({ id: "EMP" + String(employees.length + 1).padStart(2, '0'), name: name, position: 'พนักงานทั่วไป', dept: 'ทั่วไป', pin: pin, sickRemain: 30, personalRemain: 6, vacationRemain: 10 });
                     currentEmpIndex = employees.length - 1;
                     saveStorage();
                 }
             } else {
                 const select = document.getElementById('loginEmployeeSelect');
-                const pin = document.getElementById('employeePinInput').value.trim();
+                pin = document.getElementById('employeePinInput').value.trim();
                 let selectedIdx = parseInt(select.value);
-
-                if (!pin) {
-                    alert('กรุณากรอกรหัสผ่าน (PIN)');
-                    return;
-                }
+                if (!pin) { alert('กรุณากรอกรหัส PIN'); return; }
 
                 let emp = employees[selectedIdx];
-                // ตรวจสอบ PIN (ถ้าในข้อมูลยังไม่มี pin กำหนดค่าเริ่มต้นเป็น 1234)
-                let empPin = emp.pin || "1234";
-                if (pin !== empPin) {
-                    alert('รหัส PIN ไม่ถูกต้อง (รหัสเริ่มต้นคือ 1234)');
-                    return;
-                }
-
+                if (pin !== (emp.pin || "1234")) { alert('รหัส PIN ไม่ถูกต้อง (รหัสเริ่มต้นคือ 1234)'); return; }
                 currentEmpIndex = selectedIdx;
             }
 
-            isLoggedIn = true;
-            localStorage.setItem('isAdminMode', 'false');
-            localStorage.setItem('isLoggedIn', 'true');
+            isEmpLoggedIn = true;
+            localStorage.setItem('isEmpLoggedIn', 'true');
             localStorage.setItem('currentEmpIndex', currentEmpIndex);
-            
-            // เคลียร์ค่าช่อง PIN
-            document.getElementById('employeePinInput').value = '';
-            document.getElementById('employeeCustomPinInput').value = '';
-
             showMainApp();
         }
 
         function logout() {
-            isLoggedIn = false;
-            localStorage.setItem('isLoggedIn', 'false');
-            localStorage.setItem('isAdminMode', 'false');
+            isEmpLoggedIn = false;
+            localStorage.setItem('isEmpLoggedIn', 'false');
             showLoginScreen();
         }
 
@@ -525,9 +319,7 @@
             document.getElementById('loginSection').classList.add('d-none');
             document.getElementById('mainAppSection').classList.remove('d-none');
             document.body.style.background = "#f8f9fa";
-            
-            let isAdmin = localStorage.getItem('isAdminMode') === 'true';
-            switchRole(isAdmin ? 'admin' : 'user');
+            updateUI();
         }
 
         function updateUI() {
@@ -535,11 +327,9 @@
             if (!emp) return;
             document.getElementById('userNameDisplay').innerText = emp.name;
             document.getElementById('userRoleDisplay').innerText = `${emp.position} (${emp.dept})`;
-            
             document.getElementById('lblSick').innerText = emp.sickRemain;
             document.getElementById('lblPersonal').innerText = emp.personalRemain;
             document.getElementById('lblVacation').innerText = emp.vacationRemain;
-
             renderUserHistory();
         }
 
@@ -550,38 +340,19 @@
             const endDate = document.getElementById('endDate').value;
             const reason = document.getElementById('leaveReason').value;
 
-            if (new Date(endDate) < new Date(startDate)) {
-                alert('วันที่สิ้นสุดต้องไม่น้อยกว่าวันที่เริ่มต้น');
-                return;
-            }
+            if (new Date(endDate) < new Date(startDate)) { alert('วันที่สิ้นสุดต้องไม่น้อยกว่าวันที่เริ่มต้น'); return; }
 
             const days = calculateEffectiveDays(startDate, endDate);
             let emp = employees[currentEmpIndex];
             let remainKey = type === 'ลาป่วย' ? 'sickRemain' : (type === 'ลากิจ' ? 'personalRemain' : 'vacationRemain');
 
-            if (emp[remainKey] < days) {
-                alert(`วันลาไม่พอ! (ต้องการ ${days} วัน แต่คุณเหลือ ${emp[remainKey]} วัน เนื่องจากระบบหักวันอาทิตย์และวันหยุดให้แล้ว)`);
-                return;
-            }
+            if (emp[remainKey] < days) { alert(`วันลาไม่พอ! (ต้องการ ${days} วัน แต่คุณเหลือ ${emp[remainKey]} วัน)`); return; }
 
-            const newReq = {
-                id: Date.now(),
-                empIndex: currentEmpIndex,
-                empName: emp.name,
-                type: type,
-                startDate: startDate,
-                endDate: endDate,
-                days: days,
-                reason: reason,
-                status: 'รออนุมัติ',
-                approver: '-'
-            };
-
-            leaveRequests.unshift(newReq);
+            leaveRequests.unshift({ id: Date.now(), empIndex: currentEmpIndex, empName: emp.name, type, startDate, endDate, days, reason, status: 'รออนุมัติ', approver: '-' });
             saveStorage();
             document.getElementById('leaveForm').reset();
             updateUI();
-            alert(`ยื่นใบลาสำเร็จ! (ระบบคำนวณวันลาหักวันหยุดให้ ${days} วัน)`);
+            alert(`ยื่นใบลาสำเร็จ (${days} วัน)`);
         }
 
         function renderUserHistory() {
@@ -589,175 +360,13 @@
             const myReqs = leaveRequests.filter(r => r.empIndex === currentEmpIndex);
             document.getElementById('userRecordCount').innerText = `${myReqs.length} รายการ`;
 
-            if (myReqs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-3">ยังไม่มีประวัติการลา</td></tr>`;
-                return;
-            }
+            if (myReqs.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-3">ยังไม่มีประวัติการลา</td></tr>`; return; }
 
             tbody.innerHTML = '';
             myReqs.forEach(req => {
                 let badge = req.status === 'อนุมัติ' ? 'bg-success bg-opacity-10 text-success' : (req.status === 'ไม่อนุมัติ' ? 'bg-danger bg-opacity-10 text-danger' : 'bg-warning bg-opacity-10 text-warning');
-                tbody.innerHTML += `
-                    <tr>
-                        <td><span class="fw-medium">${req.type}</span></td>
-                        <td>${req.startDate} ถึง ${req.endDate}</td>
-                        <td class="text-center fw-bold">${req.days} วัน</td>
-                        <td class="text-center"><span class="badge ${badge}">${req.status}</span></td>
-                        <td><small class="text-muted">${req.approver}</small></td>
-                    </tr>
-                `;
+                tbody.innerHTML += `<tr><td><span class="fw-medium">${req.type}</span></td><td>${req.startDate} ถึง ${req.endDate}</td><td class="text-center fw-bold">${req.days} วัน</td><td class="text-center"><span class="badge ${badge}">${req.status}</span></td><td><small class="text-muted">${req.approver}</small></td></tr>`;
             });
-        }
-
-        function promptAdminPin() {
-            const pinModalEl = document.getElementById('pinModal');
-            const pinModal = new bootstrap.Modal(pinModalEl);
-            document.getElementById('pinInput').value = '';
-            pinModal.show();
-        }
-
-        function verifyPin() {
-            const pin = document.getElementById('pinInput').value;
-            const selectedAdmin = document.getElementById('adminNameSelect').value;
-
-            if (pin === '1234') {
-                currentAdminName = selectedAdmin;
-                localStorage.setItem('currentAdminName', currentAdminName);
-
-                const pinModalEl = document.getElementById('pinModal');
-                const modalInstance = bootstrap.Modal.getInstance(pinModalEl);
-                if (modalInstance) {
-                    modalInstance.hide();
-                }
-                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-                document.body.classList.remove('modal-open');
-                document.body.style.overflow = '';
-                document.body.style.paddingRight = '';
-
-                localStorage.setItem('isAdminMode', 'true');
-                document.getElementById('loginSection').classList.add('d-none');
-                document.getElementById('mainAppSection').classList.remove('d-none');
-                document.body.style.background = "#f8f9fa";
-
-                switchRole('admin');
-            } else {
-                alert('รหัส PIN ไม่ถูกต้อง (รหัสคือ 1234)');
-            }
-        }
-
-        function switchRole(role) {
-            const userSec = document.getElementById('userSection');
-            const adminSec = document.getElementById('adminSection');
-            const userNavBadge = document.getElementById('userNavBadge');
-            const adminNavBadge = document.getElementById('adminNavBadge');
-            const pageTitle = document.getElementById('pageTitle');
-
-            if (role === 'admin') {
-                userSec.classList.add('d-none');
-                adminSec.classList.remove('d-none');
-                userNavBadge.classList.add('d-none');
-                adminNavBadge.classList.remove('d-none');
-                pageTitle.innerText = "แดชบอร์ดผู้บริหาร (Admin)";
-                document.getElementById('userNameDisplay').innerText = currentAdminName;
-                document.getElementById('userRoleDisplay').innerText = "System Administrator";
-                renderAdminData();
-            } else {
-                userSec.classList.remove('d-none');
-                adminSec.classList.add('d-none');
-                userNavBadge.classList.remove('d-none');
-                adminNavBadge.classList.add('d-none');
-                pageTitle.innerText = "แดชบอร์ดพนักงาน";
-                updateUI();
-            }
-        }
-
-        function renderAdminData() {
-            document.getElementById('adminNameAlertDisplay').innerText = currentAdminName;
-            
-            const approvalTbody = document.getElementById('adminApprovalTable');
-            const pendingReqs = leaveRequests.filter(r => r.status === 'รออนุมัติ');
-
-            if (pendingReqs.length === 0) {
-                approvalTbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3">ไม่มีรายการรออนุมัติ</td></tr>`;
-            } else {
-                approvalTbody.innerHTML = '';
-                pendingReqs.forEach(req => {
-                    approvalTbody.innerHTML += `
-                        <tr>
-                            <td><span class="fw-semibold">${req.empName}</span></td>
-                            <td>${req.type}</td>
-                            <td>${req.startDate} ถึง ${req.endDate}</td>
-                            <td class="text-center fw-bold">${req.days} วัน</td>
-                            <td>${req.reason}</td>
-                            <td class="text-center">
-                                <button class="btn btn-success btn-sm px-2 py-1 me-1" onclick="handleLeave(${req.id}, 'อนุมัติ')"><i class="fa-solid fa-check"></i></button>
-                                <button class="btn btn-danger btn-sm px-2 py-1" onclick="handleLeave(${req.id}, 'ไม่อนุมัติ')"><i class="fa-solid fa-xmark"></i></button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
-
-            const historyTbody = document.getElementById('adminHistoryTable');
-            document.getElementById('adminHistoryCount').innerText = `${leaveRequests.length} รายการ`;
-
-            if (leaveRequests.length === 0) {
-                historyTbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3">ยังไม่มีประวัติการลาในระบบ</td></tr>`;
-            } else {
-                historyTbody.innerHTML = '';
-                leaveRequests.forEach(req => {
-                    let badge = req.status === 'อนุมัติ' ? 'bg-success bg-opacity-10 text-success' : (req.status === 'ไม่อนุมัติ' ? 'bg-danger bg-opacity-10 text-danger' : 'bg-warning bg-opacity-10 text-warning');
-                    historyTbody.innerHTML += `
-                        <tr>
-                            <td><span class="fw-semibold">${req.empName}</span></td>
-                            <td>${req.type}</td>
-                            <td>${req.startDate} ถึง ${req.endDate}</td>
-                            <td class="text-center fw-bold">${req.days} วัน</td>
-                            <td class="text-center"><span class="badge ${badge}">${req.status}</span></td>
-                            <td><small class="text-muted">${req.approver}</small></td>
-                        </tr>
-                    `;
-                });
-            }
-
-            const allEmpTbody = document.getElementById('allEmployeesTable');
-            allEmpTbody.innerHTML = '';
-            employees.forEach(emp => {
-                allEmpTbody.innerHTML += `
-                    <tr>
-                        <td><strong>${emp.id}</strong> - ${emp.name}</td>
-                        <td>${emp.position} (${emp.dept})</td>
-                        <td class="text-center">${emp.sickRemain} วัน</td>
-                        <td class="text-center">${emp.personalRemain} วัน</td>
-                        <td class="text-center">${emp.vacationRemain} วัน</td>
-                    </tr>
-                `;
-            });
-        }
-
-        function handleLeave(id, action) {
-            let req = leaveRequests.find(r => r.id === id);
-            if (!req) return;
-
-            req.status = action;
-            req.approver = `${currentAdminName} (${action === 'อนุมัติ' ? 'อนุมัติแล้ว' : 'ปฏิเสธแล้ว'})`;
-
-            if (action === 'อนุมัติ') {
-                let emp = employees[req.empIndex];
-                let remainKey = req.type === 'ลาป่วย' ? 'sickRemain' : (req.type === 'ลากิจ' ? 'personalRemain' : 'vacationRemain');
-                emp[remainKey] = Math.max(0, emp[remainKey] - req.days);
-            }
-
-            saveStorage();
-            renderAdminData();
-            alert(`ดำเนินการ ${action} คำขอเรียบร้อยแล้ว`);
-        }
-
-        function resetSystem() {
-            if (confirm('คุณต้องการรีเซ็ตข้อมูลการลาและสถานะทั้งหมดกลับเป็นค่าเริ่มต้นหรือไม่?')) {
-                localStorage.clear();
-                location.reload();
-            }
         }
 
         function saveStorage() {
