@@ -23,39 +23,92 @@
 
 ---
 
-## 🗄️ โครงสร้างฐานข้อมูล (Database Schema & Relations)
+# LeaveFlow Pro - ระบบจัดการลางานออนไลน์
 
-ฐานข้อมูลได้รับการออกแบบตามมาตรฐาน Relational Database (3NF) เพื่อความถูกต้องของข้อมูล (Data Integrity):
-
-### 1. leave_types (ประเภทการลาในองค์กร)
-* `id` (UUID, Primary Key)
-* `name` (TEXT เช่น ลาพักร้อน, ลาป่วย, ลากิจ, ลาไม่ได้รับค่าจ้าง)
-* `default_days` (INTEGER - จำนวนวันเริ่มต้นตามสิทธิ์ต่อปี)
-* `is_paid` (BOOLEAN - ได้รับค่าจ้างหรือไม่)
-
-### 2. leave_requests (คำขอลาของพนักงาน)
-* `id` (UUID, Primary Key)
-* `employee_id` (UUID, Foreign Key -> `employees.id`)
-* `leave_type_id` (UUID, Foreign Key -> `leave_types.id`)
-* `start_date` (DATE, NOT NULL)
-* `end_date` (DATE, NOT NULL)
-* `total_days` (NUMERIC - จำนวนวันที่ลาจริง ไม่นับวันหยุด)
-* `reason` (TEXT - เหตุผลการลา)
-* `attachment_url` (TEXT - ลิงก์ไฟล์แนบใน Supabase Storage)
-* `status` (ENUM: `PENDING`, `APPROVED`, `REJECTED`, `CANCELLED`)
-* `approver_id` (UUID, Foreign Key -> `employees.id` - ผู้อนุมัติ)
-* `created_at` (TIMESTAMP)
-
-### 3. leave_balances (โควตาวันลาคงเหลือรายบุคคล)
-* `id` (UUID, Primary Key)
-* `employee_id` (UUID, Foreign Key -> `employees.id`)
-* `leave_type_id` (UUID, Foreign Key -> `leave_types.id`)
-* `year` (INTEGER - ปี พ.ศ./ค.ศ.)
-* `total_quota` (NUMERIC - สิทธิ์ทั้งหมดในปีนี้)
-* `used_days` (NUMERIC - ใช้ไปแล้ว)
-* `remaining_days` (NUMERIC - คงเหลือ)
+**LeaveFlow Pro** เป็นเว็บแอปพลิเคชันสำหรับบริหารจัดการและยื่นคำขอลางานภายในองค์กร รองรับการทำงานทั้งฝั่งพนักงานทั่วไปและฝั่งผู้บริหาร พร้อมระบบคำนวณวันลาอัตโนมัติที่หักวันหยุดนักขัตฤกษ์และวันหยุดเสาร์-อาทิตย์
 
 ---
+
+## 🗄️ ระบบฐานข้อมูล (Database Architecture)
+
+### 📌 ข้อเสนอแนะการยกระดับสถาปัตยกรรมระบบ
+แม้ในเวอร์ชันต้นแบบ (Prototype) เริ่มต้นอาจเลือกใช้ **Local Storage** ของเบราว์เซอร์ในการเก็บข้อมูลชั่วคราวเพื่อความสะดวกในการทดสอบ แต่สำหรับการพัฒนาในระดับ Production หรือใช้งานจริงในองค์กร **ระบบฐานข้อมูลอย่างน้อยควรได้รับการยกระดับไปใช้ SQLite** (หรือฐานข้อมูลเชิงสัมพันธ์อื่น ๆ) ด้วยเหตุผลดังต่อไปนี้:
+* **ความปลอดภัยของข้อมูล (Data Security):** ป้องกันการสูญหายของข้อมูลเมื่อผู้ใช้เคลียร์แคช (Cache) ของเบราว์เซอร์
+* **ความถูกต้องและสอดคล้อง (Data Integrity):** รองรับการทำ Foreign Key Constraints ป้องกันข้อมูลพนักงานหรือคำขอลาไม่ให้เกิดความขัดแย้ง
+* **ความสามารถในการขยายระบบ (Scalability):** รองรับการเชื่อมต่อกับฝั่ง Backend (เช่น Node.js, Python หรือ PHP) เพื่อใช้งานร่วมกันหลายผู้ใช้งานในเวลาเดียวกัน
+
+---
+
+### 📋 โครงสร้างตารางฐานข้อมูล (SQLite Schema)
+
+โครงสร้างฐานข้อมูลเชิงสัมพันธ์ประกอบด้วย 3 ตารางหลัก ดังนี้:
+
+#### 1. ตาราง `employees` (ข้อมูลพนักงาน)
+จัดเก็บรายละเอียดและโควตาวันลาคงเหลือรายปีของพนักงานแต่ละคน
+* `id` (TEXT, Primary Key): รหัสพนักงาน (เช่น `EMP01`)
+* `name` (TEXT): ชื่อ - นามสกุลพนักงาน
+* `position` (TEXT): ตำแหน่งงาน
+* `dept` (TEXT): แผนกหรือฝ่าย
+* `sick_remain` (INTEGER): จำนวนวันลาป่วยคงเหลือ (ค่าเริ่มต้น 30 วัน)
+* `personal_remain` (INTEGER): จำนวนวันลากิจคงเหลือ (ค่าเริ่มต้น 6 วัน)
+* `vacation_remain` (INTEGER): จำนวนวันลาพักผ่อนคงเหลือ (ค่าเริ่มต้น 10 วัน)
+
+#### 2. ตาราง `admins` (ข้อมูลผู้บริหาร/แอดมิน)
+จัดเก็บรายชื่อคณะผู้บริหารที่มีสิทธิ์อนุมัติและจัดการระบบ (เช่น คุณพิชญ์สินี ทับพยุง และ คุณณัฐพงศ์ พรมสงฆ์)
+* `id` (INTEGER, Primary Key, Auto-increment): รหัสประจำตัวแอดมิน
+* `name` (TEXT): ชื่อ - นามสกุลผู้บริหาร
+* `pin_code` (TEXT): รหัส PIN สำหรับยืนยันตัวตนก่อนเข้าสู่ระบบจัดการ
+
+#### 3. ตาราง `leave_requests` (รายการคำขอลางาน)
+เก็บบันทึกประวัติการยื่นใบลาทั้งหมด พร้อมสถานะและผู้ตรวจสอบ
+* `id` (INTEGER, Primary Key, Auto-increment): รหัสคำขอลา
+* `emp_id` (TEXT, Foreign Key): รหัสพนักงานผู้อยู่ในสถานะยื่นลา (เชื่อมโยงกับตาราง `employees`)
+* `leave_type` (TEXT): ประเภทการลา (ลาป่วย, ลากิจ, ลาพักผ่อน)
+* `start_date` (DATE): วันที่เริ่มต้นลา
+* `end_date` (DATE): วันที่สิ้นสุดลา
+* `days` (INTEGER): จำนวนวันลาสุทธิ (ระบบคำนวณหักวันหยุดเสาร์-อาทิตย์และวันหยุดนักขัตฤกษ์ให้อัตโนมัติ)
+* `reason` (TEXT): เหตุผลความจำเป็นในการลา
+* `status` (TEXT): สถานะคำขอปัจจุบัน (`รออนุมัติ`, `อนุมัติ`, `ไม่อนุมัติ`)
+* `approver_name` (TEXT): ชื่อผู้บริหารที่ทำการกดอนุมัติหรือปฏิเสธคำขอนั้น ๆ
+* `created_at` (TIMESTAMP): วันและเวลาที่สร้างคำขอ
+
+---
+
+### ⚙️ ตัวอย่างโค้ดสร้างฐานข้อมูล (SQLite DDL)
+
+```sql
+-- สร้างตารางพนักงาน
+CREATE TABLE employees (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    position TEXT,
+    dept TEXT,
+    sick_remain INTEGER DEFAULT 30,
+    personal_remain INTEGER DEFAULT 6,
+    vacation_remain INTEGER DEFAULT 10
+);
+
+-- สร้างตารางผู้บริหาร (Admin)
+CREATE TABLE admins (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    pin_code TEXT NOT NULL
+);
+
+-- สร้างตารางคำขอลางาน
+CREATE TABLE leave_requests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    emp_id TEXT NOT NULL,
+    leave_type TEXT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    days INTEGER NOT NULL,
+    reason TEXT,
+    status TEXT DEFAULT 'รออนุมัติ',
+    approver_name TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (emp_id) REFERENCES employees(id)
+);
 
 ## ⚙️ ตรรกะการคำนวณและการเชื่อมโยงระบบ (Business Logic Specification)
 
