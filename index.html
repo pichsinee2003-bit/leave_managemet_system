@@ -107,7 +107,7 @@
                         <div class="tab-pane fade" id="customContent" role="tabpanel">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold text-secondary">ชื่อ - นามสกุล</label>
-                                <input type="text" class="form-control" id="loginCustomName" placeholder="เช่น คุณพิชญ์สินี ทับพยุง">
+                                <input type="text" class="form-control" id="loginCustomName" placeholder="เช่น คุณสมชาย ใจดี">
                             </div>
                             <button type="button" class="btn btn-primary w-100 py-3 shadow-sm" onclick="loginAsEmployee(true)">
                                 <i class="fa-solid fa-user-pen me-2"></i>เข้าสู่ระบบด้วยชื่อนี้
@@ -263,7 +263,7 @@
             <div id="adminSection" class="d-none">
                 <div class="alert alert-warning shadow-sm mb-4 d-flex align-items-center justify-content-between rounded-4 p-3 flex-wrap gap-2">
                     <div>
-                        <i class="fa-solid fa-user-shield me-2"></i> คณะผู้บริหาร: <strong class="text-dark">คุณพิชญ์สินี ทับพยุง และ คุณณัฐพงศ์ พรมสงฆ์</strong>
+                        <i class="fa-solid fa-user-shield me-2"></i> ผู้บริหารที่เข้าสู่ระบบ: <strong class="text-dark" id="adminNameAlertDisplay">คุณพิชญ์สินี ทับพยุง</strong>
                     </div>
                     <button class="btn btn-danger btn-sm px-3 fw-semibold rounded-pill shadow-sm" onclick="resetSystem()">
                         <i class="fa-solid fa-rotate-right me-1"></i> รีเซ็ตระบบใหม่ทั้งหมด
@@ -624,6 +624,7 @@
                 
                 document.getElementById('userNameDisplay').innerText = currentAdminName;
                 document.getElementById('userRoleDisplay').innerText = "Executive / Admin";
+                document.getElementById('adminNameAlertDisplay').innerText = currentAdminName;
 
                 renderAdminData();
             } else {
@@ -637,7 +638,6 @@
         }
 
         function renderAdminData() {
-            // ตารางรายการรออนุมัติ
             const tbody = document.getElementById('adminApprovalTable');
             const pendingReqs = leaveRequests.filter(r => r.status === 'รออนุมัติ');
 
@@ -663,7 +663,6 @@
                 });
             }
 
-            // ตารางประวัติย้อนหลังทั้งหมดในหน้าแอดมิน (Admin History Log)
             const adminHistoryTbody = document.getElementById('adminHistoryTable');
             const processedReqs = leaveRequests.filter(r => r.status !== 'รออนุมัติ');
             document.getElementById('adminHistoryCount').innerText = `${processedReqs.length} รายการ`;
@@ -688,7 +687,6 @@
                 });
             }
 
-            // ตารางสรุปวันลาพนักงานทั้งหมด
             const allEmpTbody = document.getElementById('allEmployeesTable');
             allEmpTbody.innerHTML = '';
             employees.forEach(emp => {
@@ -717,7 +715,7 @@
                 emp[remainKey] -= req.days;
             }
             req.status = status;
-            req.approver = currentAdminName; // บันทึกชื่อแอดมินที่กดอนุมัติ/ปฏิเสธ
+            req.approver = currentAdminName;
             saveStorage();
             renderAdminData();
             alert(`บันทึกสถานะ "${status}" โดย ${currentAdminName} เรียบร้อยแล้ว`);
