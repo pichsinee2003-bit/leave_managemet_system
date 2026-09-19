@@ -293,7 +293,7 @@
                 </div>
 
                 <div class="card p-4 mb-4">
-                    <h5 class="fw-bold mb-3"><i class="fa-solid fa-users me-2 text-success"></i>สรุปสถานะวันลาพนักงานทั้งหมด</h5>
+                    <h5 class="fw-bold mb-3"><i class="fa-solid fa-users me-2 text-success"></i>สรุปสถานะวันลาพนักงานทั้งหมด[cite: 7]</h5>
                     <div class="table-responsive">
                         <table class="table table-bordered align-middle">
                             <thead class="table-light text-center">
@@ -478,6 +478,7 @@
             let emp = employees[currentEmpIndex];
             let remainKey = type === 'ลาป่วย' ? 'sickRemain' : (type === 'ลากิจ' ? 'personalRemain' : 'vacationRemain');
 
+            // เช็คว่าวันลาพนักงานพอไหม ตั้งแต่ตอนกดส่งใบลา
             if (emp[remainKey] < days) {
                 alert(`วันลาไม่พอ! (ต้องการ ${days} วัน แต่คุณเหลือ ${emp[remainKey]} วัน เนื่องจากระบบหักวันอาทิตย์และวันหยุดให้แล้ว)`);
                 return;
@@ -536,7 +537,6 @@
         function verifyPin() {
             const pin = document.getElementById('pinInput').value;
             if (pin === '1234') {
-                // ปิด Modal และเคลียร์ Backdrop ของ Bootstrap อย่างถูกต้อง
                 const pinModalEl = document.getElementById('pinModal');
                 const modalInstance = bootstrap.Modal.getInstance(pinModalEl);
                 if (modalInstance) {
@@ -547,7 +547,6 @@
                 document.body.style.overflow = '';
                 document.body.style.paddingRight = '';
 
-                // หากอยู่ที่หน้า Login ให้ซ่อนหน้า Login แล้วเปิดแดชบอร์ดหลักในโหมด Admin
                 document.getElementById('loginSection').classList.add('d-none');
                 document.getElementById('mainAppSection').classList.remove('d-none');
                 document.body.style.background = "#f8f9fa";
@@ -636,11 +635,12 @@
                     alert('วันลาของพนักงานไม่เพียงพอสำหรับการอนุมัติ');
                     return;
                 }
+                // ตัดวันลาออกตามจำนวนวันที่ลาจริง
                 emp[remainKey] -= req.days;
             }
             req.status = status;
             saveStorage();
-            renderAdminData();
+            renderAdminData(); // รีเฟรชตารางโควตาวันลาและรายการรออนุมัติทันที
             alert(`บันทึกสถานะ "${status}" และอัปเดตวันลาเรียบร้อยแล้ว`);
         }
 
