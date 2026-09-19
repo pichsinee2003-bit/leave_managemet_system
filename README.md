@@ -2,7 +2,7 @@
 
 ระบบบริหารจัดการการลาของพนักงานในองค์กรแบบคลาวด์ พัฒนาขึ้นเพื่อตอบสนองการคำนวณวันลา โควตาการลาตามกฎหมายแรงงานไทย การอนุมัติคำขอลา และการเชื่อมโยงข้อมูลวันลาเข้ากับระบบคำนวณเงินเดือนอัตโนมัติ (Payroll Integration)
 
-🌐 **Live Production URL:** 
+🌐 **Live Production URL:** https://pichsinee2003-bit.github.io/leave_managemet_system/
 
 ---
 
@@ -20,7 +20,6 @@
 * **Frontend Framework:** Next.js (App Router, Static HTML Export)
 * **Styling:** Tailwind CSS (Modern Card/Modal Design, Responsive, Print Media Queries)
 * **Backend & Database:** Supabase (PostgreSQL 15 + GoTrue Authentication)
-* **Storage:** Supabase Storage (สำหรับจัดเก็บไฟล์แนบ/ใบรับรองแพทย์)
 
 ---
 
