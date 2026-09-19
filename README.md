@@ -15,14 +15,31 @@
 
 ---
 
-## 🛠️ เทคโนโลยีที่ใช้ (Tech Stack & Architecture)
+## 🛠️ เทคโนโลยีและสถาปัตยกรรม (Tech Stack & Architecture)
 
-* **Frontend:** HTML5, CSS3, Modern JavaScript (Vanilla JS)
-* **Styling:** Tailwind CSS (ผ่าน CDN สำหรับดีไซน์ที่ทันสมัย, Responsive Design และรองรับการพิมพ์)
-* **UI Components:** Modern Card, Modal Design & Interactive Dashboard
-* **Backend & Database Simulation:** ไม่มี — ทำงานแบบ Static Website 100%
-* **Data Storage:** ใช้ `localStorage` ของ Browser ในการจำลองการจัดเก็บข้อมูลพนักงานและสถานะคำขอลา
+### 1. Frontend
+* **HTML5:** โครงสร้างหลักของหน้าเว็บ (Semantic Web) เช่น ฟอร์มขอลา ปุ่มกด และตารางข้อมูล
+* **CSS3:** ตกแต่งเลย์เอาต์ สีสัน ตัวอักษร และการจัดหน้าจอ
+* **Modern JavaScript (Vanilla JS):** ควบคุมการทำงานแบบไดนามิก (Interactive) เช่น การคำนวณวันลาอัตโนมัติ, เปิด-ปิด Modal และ Form Validation
 
+### 2. Styling (Tailwind CSS)
+* **ผ่าน CDN:** โหลดใช้งานผ่านคลาวด์โดยไม่ต้องติดตั้ง Build Tools เพิ่มเติม
+* **Modern Design:** ดีไซน์สวยงาม ทันสมัย มีเงาและขอบมนเป็นมาตรฐานสากล
+* **Responsive Design:** รองรับการแสดงผลทุกหน้าจอ (มือถือ, แท็บเล็ต, คอมพิวเตอร์)
+
+### 3. UI Components
+* **Modern Card:** กล่องข้อมูลสี่เหลี่ยมขอบมนสำหรับแบ่งหมวดหมู่ เช่น สรุปวันลาคงเหลือหรือสถานะคำขอลา
+* **Modal Design:** หน้าต่างป๊อปอัปสำหรับกรอกฟอร์มหรืออนุมัติงาน ช่วยให้ผู้ใช้โฟกัสกับงานตรงหน้าโดยไม่ต้องเปลี่ยนหน้าเว็บ
+* **Interactive Dashboard:** หน้าจอรวมสถิติ ข้อมูลสรุป และปุ่มลัดเพื่อจัดการระบบได้ทันที
+
+### 4. Backend & Database Simulation
+* **ไม่มี Backend:** ไม่มีเซิร์ฟเวอร์ส่วนกลาง (เช่น Node.js, PHP)
+* **ไม่มี Database จริง:** ไม่มีฐานข้อมูล (เช่น MySQL, MongoDB)
+* **Static Website 100%:** ทำงานด้วยไฟล์ HTML, CSS, JS ล้วน สามารถเปิดใช้งานผ่านเบราว์เซอร์หรือDeploy บน Static Hosting (เช่น GitHub Pages, Vercel) ได้ทันที
+
+### 5. Data Storage (LocalStorage)
+* **Browser localStorage:** ใช้พื้นที่จัดเก็บข้อมูลในตัวเบราว์เซอร์ของผู้ใช้
+* **การจำลองฐานข้อมูล:** ข้อมูลพนักงานและสถานะคำขอลาจะถูกแปลงเป็น JSON และบันทึกไว้ ทำให้ข้อมูลไม่หายไปเมื่อรีเฟรชหน้าเว็บ (ข้อมูลจะบันทึกเฉพาะในเครื่องของผู้ใช้งานแต่ละคน)
 ---
 
 # LeaveFlow Pro - ระบบจัดการลางานออนไลน์
