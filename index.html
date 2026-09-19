@@ -185,7 +185,6 @@
                 <div>
                     <i class="fa-solid fa-user-shield me-2"></i> ผู้บริหารสูงสุด: <strong class="text-dark">คุณพิชญ์สินี ทับพยุง</strong>
                 </div>
-                <!-- ปุ่มรีเซ็ตระบบใหม่ทั้งหมด -->
                 <button class="btn btn-danger btn-sm px-3 fw-semibold rounded-pill shadow-sm" onclick="resetSystem()">
                     <i class="fa-solid fa-rotate-right me-1"></i> รีเซ็ตระบบใหม่ทั้งหมด
                 </button>
@@ -346,7 +345,7 @@
 
             const newReq = {
                 id: Date.now(),
-                empIndex: currentEmpIndex,
+                empIndex: currentEmpIndex, // เก็บ Index ของพนักงานคนนั้นๆ โดยตรง
                 empName: emp.name,
                 type: type,
                 startDate: startDate,
@@ -474,23 +473,26 @@
             });
         }
 
+        // ฟังก์ชันอัปเดตสถานะและตัดวันลาของพนักงานทันทีที่กดอนุมัติ
         function updateStatus(index, status) {
             let req = leaveRequests[index];
             if (status === 'อนุมัติ') {
                 let emp = employees[req.empIndex];
                 let remainKey = req.type === 'ลาป่วย' ? 'sickRemain' : (req.type === 'ลากิจ' ? 'personalRemain' : 'vacationRemain');
+                
                 if (emp[remainKey] < req.days) {
                     alert('วันลาของพนักงานไม่เพียงพอสำหรับการอนุมัติ');
                     return;
                 }
+                // ตัดวันลาออกจากโควต้าของพนักงานทันที
                 emp[remainKey] -= req.days;
             }
             req.status = status;
             saveStorage();
             renderAdminData();
+            alert(`บันทึกสถานะ "${status}" และอัปเดตวันลาเรียบร้อยแล้ว`);
         }
 
-        // ฟังก์ชันรีเซ็ตระบบใหม่ทั้งหมด
         function resetSystem() {
             if (confirm('คุณต้องการรีเซ็ตข้อมูลระบบทั้งหมด (ประวัติการลาและโควตาวันลา) ใช่หรือไม่?')) {
                 localStorage.clear();
