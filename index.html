@@ -155,10 +155,17 @@
                         <div id="userNameDisplay" class="fw-bold text-dark">คุณสมชาย ใจดี</div>
                         <div id="userRoleDisplay" class="text-muted small">Senior Developer (IT)</div>
                     </div>
-                    <div class="btn-group shadow-sm" role="group">
-                        <button type="button" class="btn btn-outline-primary active px-3" id="btnRoleUser" onclick="switchRole('user')">พนักงาน</button>
-                        <button type="button" class="btn btn-outline-warning text-dark fw-medium px-3" id="btnRoleAdmin" onclick="promptAdminPin()">ผู้บริหาร (Admin)</button>
+                    
+                    <!-- แสดงเฉพาะปุ่มพนักงานเมื่ออยู่ในโหมดพนักงาน -->
+                    <div id="userNavBadge" class="d-none">
+                        <span class="badge bg-primary px-3 py-2">พนักงาน</span>
                     </div>
+
+                    <!-- แสดงเฉพาะปุ่มผู้บริหารเมื่ออยู่ในโหมดแอดมิน -->
+                    <div id="adminNavBadge" class="d-none">
+                        <span class="badge bg-warning text-dark px-3 py-2 fw-medium"><i class="fa-solid fa-user-shield me-1"></i> ผู้บริหาร (Admin)</span>
+                    </div>
+
                     <button class="btn btn-outline-danger btn-sm px-3 ms-2" onclick="logout()" title="ออกจากระบบ">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     </button>
@@ -424,6 +431,7 @@
             }
 
             isLoggedIn = true;
+            localStorage.setItem('isAdminMode', 'false');
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('currentEmpIndex', currentEmpIndex);
             showMainApp();
@@ -432,6 +440,7 @@
         function logout() {
             isLoggedIn = false;
             localStorage.setItem('isLoggedIn', 'false');
+            localStorage.setItem('isAdminMode', 'false');
             showLoginScreen();
         }
 
@@ -446,7 +455,9 @@
             document.getElementById('loginSection').classList.add('d-none');
             document.getElementById('mainAppSection').classList.remove('d-none');
             document.body.style.background = "#f8f9fa";
-            switchRole('user');
+            
+            let isAdmin = localStorage.getItem('isAdminMode') === 'true';
+            switchRole(isAdmin ? 'admin' : 'user');
         }
 
         function updateUI() {
@@ -478,7 +489,6 @@
             let emp = employees[currentEmpIndex];
             let remainKey = type === 'ลาป่วย' ? 'sickRemain' : (type === 'ลากิจ' ? 'personalRemain' : 'vacationRemain');
 
-            // เช็คว่าวันลาพนักงานพอไหม ตั้งแต่ตอนกดส่งใบลา
             if (emp[remainKey] < days) {
                 alert(`วันลาไม่พอ! (ต้องการ ${days} วัน แต่คุณเหลือ ${emp[remainKey]} วัน เนื่องจากระบบหักวันอาทิตย์และวันหยุดให้แล้ว)`);
                 return;
@@ -547,6 +557,7 @@
                 document.body.style.overflow = '';
                 document.body.style.paddingRight = '';
 
+                localStorage.setItem('isAdminMode', 'true');
                 document.getElementById('loginSection').classList.add('d-none');
                 document.getElementById('mainAppSection').classList.remove('d-none');
                 document.body.style.background = "#f8f9fa";
@@ -560,15 +571,15 @@
         function switchRole(role) {
             const userSec = document.getElementById('userSection');
             const adminSec = document.getElementById('adminSection');
-            const btnUser = document.getElementById('btnRoleUser');
-            const btnAdmin = document.getElementById('btnRoleAdmin');
+            const userNavBadge = document.getElementById('userNavBadge');
+            const adminNavBadge = document.getElementById('adminNavBadge');
             const pageTitle = document.getElementById('pageTitle');
 
             if (role === 'admin') {
                 userSec.classList.add('d-none');
                 adminSec.classList.remove('d-none');
-                btnAdmin.className = "btn btn-warning text-dark fw-medium px-3 active";
-                btnUser.className = "btn btn-outline-primary px-3";
+                userNavBadge.classList.add('d-none');
+                adminNavBadge.classList.remove('d-none');
                 pageTitle.innerText = "แดชบอร์ดผู้บริหาร (Admin Dashboard)";
                 
                 document.getElementById('userNameDisplay').innerText = "คุณพิชญ์สินี ทับพยุง";
@@ -578,8 +589,8 @@
             } else {
                 adminSec.classList.add('d-none');
                 userSec.classList.remove('d-none');
-                btnUser.className = "btn btn-primary px-3 active";
-                btnAdmin.className = "btn btn-outline-warning text-dark fw-medium px-3";
+                adminNavBadge.classList.add('d-none');
+                userNavBadge.classList.remove('d-none');
                 pageTitle.innerText = "แดชบอร์ดพนักงาน";
                 updateUI();
             }
@@ -635,12 +646,11 @@
                     alert('วันลาของพนักงานไม่เพียงพอสำหรับการอนุมัติ');
                     return;
                 }
-                // ตัดวันลาออกตามจำนวนวันที่ลาจริง
                 emp[remainKey] -= req.days;
             }
             req.status = status;
             saveStorage();
-            renderAdminData(); // รีเฟรชตารางโควตาวันลาและรายการรออนุมัติทันที
+            renderAdminData();
             alert(`บันทึกสถานะ "${status}" และอัปเดตวันลาเรียบร้อยแล้ว`);
         }
 
